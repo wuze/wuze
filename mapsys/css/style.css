@@ -27,13 +27,17 @@ body{
 	float:left;
 }
 #menu{
+border-radius: 15px 25px 0px 0px; 
+-webkit-border-radius: 15px 25px 0px 0px; 
+-moz-border-radius: 15px 25px 0px 0px; 
+
 	background:url(/images/menu_bg.jpg) top left no-repeat;
-	width:988px;
+	width:995px;
 	height:46px;
 	float:left;
 	/ float:none;
-	margin:1px 0 0 0;
-	padding:2px 0 0 4px;
+	margin:0 0 0 0;
+	padding:1px 0 0 4px;
 }
 #menu ul{
 	overflow:hidden;
@@ -181,6 +185,27 @@ padding:0 0 18px 0;
 	width:240px;
 	background:url(/images/grey.png) repeat-x top left; 
 	color:#6D7072;
+	cursor:pointer;
+}
+
+.sponsors a{
+	font-weight:bolder;
+	text-align:center;
+}
+.sponsors_down
+{
+	display:none;
+	border:solid 4px #0000EE;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 4px;
+	margin: 0 0  4px 5px;
+	float:left;
+	width:240px;
+	height:300px;
+	color:#6D7072;
+	scrollbar-arrow-color:yellow;
+	scrollbar-base-color:lightsalmon;
 }
 
 .sponsors a{

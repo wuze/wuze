@@ -5,6 +5,7 @@
 		<div id="header">
 			<a href="#" class="logo"><img src="images/logo.gif" alt="setalpm" width="202" height="100" /></a>																																				
 			<div id="menu">
+			<!-- 
 				<ul>
 					<li><a href="#" class="but1 active"><img src="images/spacer.gif" alt="" width="106" height="42" /></a></li>
 					<li><a href="#" class="but2"><img src="images/spacer.gif" alt="" width="118" height="42" /></a></li>
@@ -13,9 +14,12 @@
 					<li><a href="#" class="but5"><img src="images/spacer.gif" alt="" width="154" height="42" /></a></li>
 					<li><a href="#" class="but6"><img src="images/spacer.gif" alt="" width="129" height="42" /></a></li>
 				</ul>
-				<form action="#">
-					<input type="text" value="Search" />
-				</form>
+			-->
+				<ul style="float:right;font-weight:bolder;margin-top:12px;margin-right:100px;cursor:pointer;">
+				<li>关于我们</li>
+				<li>|</li>
+				<li>帮助</li>
+				</ul>
 			</div>
 		</div>
 		
@@ -78,23 +82,27 @@
 				<!---   start  -->
 				<div class="sponsors" id="index">
 					<a class="orange">文化信息索引类</a>
-					<div class="subinfo">
-					
-					</div>
+				</div>
+				<div class="sponsors_down">
 				</div>
 				
 				<div class="sponsors" id="tradition">
 					<a class="green">文化信息传统类</a>
 				</div>
 				
+				<div class="sponsors_down">
+				</div>
 				<div class="sponsors" id="wether">
 					<a class="red">天气情况</a>
+				</div>
+				<div class="sponsors_down">
 				</div>
 				
 				<div class="sponsors" id="link">
 					<a class="blue">友情链接</a>
 				</div>
-				
+				<div class="sponsors_down">
+				</div>
 				<!---   end -->
 			</div>
 		</div>
