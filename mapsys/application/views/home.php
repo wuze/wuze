@@ -3,7 +3,14 @@
 <body>
 	<div id="site">
 		<div id="header">
-			<a href="#" class="logo"><img src="images/logo.gif" alt="setalpm" width="202" height="100" /></a>																																				
+			<a href="#" class="logo">
+				<img src="images/logo.gif"  width="200" height="110" />
+				<img src="images/title.png"  width="300" height="110" />
+			</a>				
+			<?php $wk = array(1=>"星期一",2=>"星期二",3=>"星期三",4=>"星期四",5=>"星期五",6=>"星期六",0=>"星期天");
+				$now = date("w");
+			?>
+			<a style="float:right;margin-top:100px;margin-right:50px;font-weight:bolder;font-color:RGB(23,45,167);"><?php echo "今天是".date("Y-m-d")."  ".$wk[$now]; ?></a>																																
 			<div id="menu">
 			<!-- 
 				<ul>
