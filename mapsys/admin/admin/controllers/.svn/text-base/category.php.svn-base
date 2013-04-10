@@ -1,0 +1,137 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 年级分类
+ * @last 2011-11-15 15:28
+ * @author fuwei
+ *
+ */
+
+/**
+ * 控制器描述数组
+ DESCARRAY
+ $simple['desc'] = '年级分类管理';
+ $simple['actions']  = array(
+ 'index'=>array('name'=>'年级分类列表', 'writelog' => 'file'),
+ 'edit'=>array('name'=>'修改年级'),
+ 'del'=>array('name'=>'删除年级'),
+ 'add'=>array('name'=>'添加年级'),
+
+ );
+ DESCARRAY
+ */
+
+class Category extends MY_Controller {
+	
+	
+	
+	public function index(){
+
+		$this->seo_title = "年级分类列表";
+		
+		$this->db->select("*");
+		$this->db->order_by("path", "asc");
+		$query = $this->db->get("categorys");
+		
+		foreach ($query->result() as $row){
+			$dept = count(explode('|', $row->path))-1;
+			if($dept){
+				$row->name_suff =  "|" . str_repeat('---',($dept));
+			}
+			
+			$list[] = $row;
+		}
+		
+		$data['list'] = $list;
+		
+		
+		
+		$this->load->view("default/category_index", $data);
+	}
+	
+	
+	public function del(){
+		$catid = intval( $this->input->get('catid') );
+		
+		if(!$catid){
+			showmessage("请选择您需要删除的年级");
+		}
+		
+		$this->db->delete('categorys', array('catid' => $catid));
+		showmessage("删除成功",'', site_url( array('c' => 'category', 'm' => 'index') ));
+	}
+	
+	/**
+	 * 修改年级分类
+	 * 
+	 */
+	public function edit(){
+		$this->seo_title = '修改年级';
+		$catid = intval( $this->input->get('catid') );
+		
+		if(!$catid){
+			showmessage("请选择您需要修改的年级");
+		}
+		
+		$query = $this->db->get_where('categorys', array('catid' => $catid));
+		$result = $query->row();
+		
+		$data['detail'] = $result;
+		
+		$this->load->view('default/category_edit', $data);
+		
+	}
+	
+	/**
+	 * 添加年级分类
+	 * @author jagy
+	 */
+	public function add(){
+		$this->seo_title = '添加年级';
+		$data = $this->input->post('data');
+		
+		if($data){
+			if($data['parentid']){
+				//有父目录，就需要先查询父目录的
+				$query = $this->db->get_where('categorys', array('catid' => $data['parentid']));
+				$result  = $query->row();
+				
+			}
+			
+			if(!$data['catname']){
+				showmessage('请输入年级名');
+			}
+			$data['dept'] = $result->dept + 1;
+			
+			
+			if($data['catid']){
+				$this->db->where('catid', $data['catid']);
+				$this->db->update('categorys', $data);
+				$id = $data['catid'];
+			}
+			else{
+				$this->db->insert('categorys', $data);
+				$id = $this->db->insert_id();
+			}
+			
+			
+			
+			$this->db->where('catid', $id);
+			if($data['parentid']){
+				$this->db->update('categorys', array('path' => $result->path . "|".$id ));
+			}
+			else{
+				$this->db->update('categorys', array('path' => $id ));
+			}
+			
+			showmessage('添加成功', '', site_url(array('c'=>'category', 'm' => 'index')));
+		}
+		
+		
+		
+		$detail->parentid = $this->input->get('parentid');
+		$data['detail'] = $detail;
+		$this->load->view('default/category_edit', $data);
+		
+		
+	}
+}

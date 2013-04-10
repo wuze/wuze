@@ -1,0 +1,115 @@
+<?php $this->load->view('header_m'); ?>
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<h1>新闻列表</h1>
+</div>
+<div class="mainbox">
+<div class="bdrcontent">
+<form method="post" action="<?php echo site_url(array('c' =>'news'));?>">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+	<caption class="capcenter">新闻搜索</caption>
+	<tr>
+		<th>标题关键字：</th>
+		<td><input type="text" value="<?php echo $search[title];?>" name="data[title]"/></td>
+	</tr>
+	<tr>
+		<th>新闻类型：</th>
+		<td>
+		<select name="data[newscatid]"  size="1" class="gold_sapji a" style="width:120px;">
+		<option value=''>请选择新闻类型</option>
+		<?php foreach ($newscate as $key=>$value): ?>
+		<option value='<?php echo $value['newscatid']?>' <?php if($search[newscatid] == $value[newscatid]) { ?> selected <?php }?> ><?php echo $value['newscatname']?></option>
+		<?php  endforeach; ?>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>新闻所属年段：</th>
+		<td>
+		<select name="data[catid]"  size="1" class="gold_sapji a" style="width:120px;">
+		<option value=''>请选择年段</option>
+		<?php foreach ($classcate as $key=>$value): ?>
+		<option value='<?php echo $value['catid']?>' <?php if($search[catid] == $value[catid]) { ?> selected <?php }?> ><?php echo $value['catname']?></option>
+		<?php  endforeach; ?>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tr_last">
+		<input type="submit" style="cursor:pointer;" class="sub_btn mr10" value="搜索" />
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+
+
+
+
+<div class="bdrcontent">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+		<caption class="capcenter">新闻列表</caption>
+		<tbody>
+			<tr>
+				<th >序号</th>
+				<th >新闻标题</th>
+				<th >类别</th>
+				<th>年段</th>
+				<th >作者</th>
+				<th >录入时间</th>
+				<th>前台时间</th>
+				<th >管理</th>
+			</tr>
+		</tbody>
+		
+		<?php if (!empty( $resultdata)) {?>
+		<?php  foreach ($resultdata as $key=>$value): ?>
+		<?php $mykey = $key+1; ?>
+		<tr id="tr_<?php echo $value['newsid']?>">
+			<td style="text-align:center;"><?php echo $mykey?></td>
+			<td><?php echo $value[title] ?></td>
+			<td style="text-align:center;"><?php echo $value[newscatname] ?></td>
+			<td style="text-align:center;">
+			<?php foreach ($classcate as $data):?>
+			<?php  if ($data['catid']==$value['catid']) {?>
+				<?php echo $data[catname]?>
+			<?php } ?>
+			<?php endforeach; ?>
+			</td>
+			<td><?php echo $value[author] ?></td>
+			<td><?php echo date('Y-m-d', $value[addtime]);?> </td>
+			<td><?php echo date('Y-m-d', $value[pubtime]);?> </td>
+			<td style="text-align:center;"><a  href="<?php echo site_url('/news/showdata/'.$value['newsid']); ?>">管理新闻</a>&nbsp;<a  href="#" onclick="delnews(<?php echo $value[newsid] ?>)">删除新闻</a></td>
+		</tr>	
+		<?php endforeach;?>
+		<?php } else { ?>
+		<tr style="text-align: center;color:red;" >
+		<td COLSPAN="7" >暂时没有搜索到符合条件的数据</td>
+		</tr>
+		<?php }?>
+	</table>
+	
+	<dl class="gold_page p00"><?php echo $page?>     </dl>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+function 	delnews(newsid){
+	$.get('/admin/index.php/news/deletenews/'+newsid,{},function(r){
+		if (r.substr(0) == 1) {
+			$('#tr_'+newsid).hide(300);
+		}
+		else{			
+			alert("暂时不能删除");	
+		}	
+	});
+	
+}
+</script>
+
+<?php $this->load->view('footer'); ?>

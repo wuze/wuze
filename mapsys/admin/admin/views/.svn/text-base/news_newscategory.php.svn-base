@@ -1,0 +1,66 @@
+<?php $this->load->view('header_m'); ?>
+<style  type="text/css">
+.bdrcontent{
+	border:1px solid #FF8E00;
+	padding:1em;
+}
+</style>
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<h1>新闻列表</h1>
+</div>
+<div class="mainbox">
+<div >
+<form method="post" action="<?php echo site_url('/news/newscate/')?>">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+	<caption class="capcenter">添加新闻分类</caption>
+	<tr>
+		<th>添加分类名：</th>
+		<td><input type="text" name="newscates"/>
+		<input type="submit" style="cursor:pointer;" class="sub_btn mr10" value="添加" />
+		</td>
+	</tr>
+	</table>
+	</form>
+</div>
+
+<div style="margin-top:10px;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+		<caption class="capcenter">当前已有新闻分类</caption>
+		<tbody>
+			<tr>
+			
+				<th >分类ID</th>
+				<th >分类名</th>
+				<th>管理</th>
+			</tr>
+		</tbody>
+	<?php if(is_array($resultdata)): foreach ($resultdata as $key=>$value): ?>
+	
+	<tr style="text-align:center;" id="tr_<?php echo $value['newscatid']?>">
+		
+		<td><?php echo $value[newscatid] ?></td>
+		<td ><?php echo $value[newscatname] ?></td>
+		<td><a href="#" onclick="delcates(<?php echo $value[newscatid] ?>)" >删除该分类</a></td>
+	<?php endforeach;  endif;?>
+	</table>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+
+function 	delcates(newsid){
+	$.get('/admin/index.php/news/deletecates/'+newsid,{},function(r){
+		if (r.substr(0) == 1) {
+			$('#tr_'+newsid).hide(300);
+		}
+		else{			
+			alert("暂时不能删除");	
+		}	
+	});
+	
+}
+</script>
+<?php $this->load->view('footer'); ?>

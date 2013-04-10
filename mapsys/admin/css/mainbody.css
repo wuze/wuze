@@ -1,0 +1,64 @@
+body{ overflow:scroll; overflow-x:hidden; font-size:12px;}
+
+.rgmain{border-top:1px solid #0e5d7a; border-left:1px solid #0e5d7a; background:#fff; width:100%; float:right; }
+.rgtit{ background:url(../images/rg_tit_bak.jpg) repeat-x transparent; height:32px; line-height:32px; width:100%;}
+.rgtit h1{ background:url(../images/normal.jpg) no-repeat scroll transparent; height:27px; line-height:27px; margin-left:8px; display:block; width:86px; float:left; margin-top:5px; text-align:center; font-weight:bold; color:#0e5d7a; font-size:14px;}
+.rgtit h1.current{background:url(../images/rg_tit_bg.jpg) no-repeat scroll transparent;}
+
+.rgmain .mainbox{ width:1100px; margin-top:14px; margin-left:15px; margin-bottom:10px;}
+.rgmain .mainbox h2{ background:#479dc0; height:22px; line-height:22px; text-align:center; color:#FFFFFF; font-weight:bold;}
+.rgmain .tableft{ float:left; width:545px; margin-top:15px;}
+.rgmain .tabrg{ float:left; width:545px; margin-left:10px; margin-top:15px;}
+.rgmain table{ text-align:left; color:#363636;}
+.rgmain caption{ height:23px; line-height:23px; padding-left:10px; background:#479dc0; color:#FFFFFF;}
+.rgmain caption.capcenter{ text-align:center; font-weight:bold;}
+.rgmain tr{ height:23px;background:#f3f9fc;}
+.rgmain td{ padding-left:10px; line-height:23px; }
+.rgmain td.whtco{ background:#FFFFFF; padding-top:10px; padding-bottom:10px;}
+.rgmain td img{ padding-top:8px;}
+.rgmain th{ line-height:23px; background:#f3f9fc; color:#0a4e67; font-weight:bold; text-align:center; width:89px;}
+.rgmain textarea.des{ width:400px; height:100px; border:1px solid #ccc;}
+.rgmain .selinput{ height:18px; border:1px solid #86b5db; width:200px; vertical-align:top;}
+.rgmain .selbtn{ background:url(../images/selecte_btn.jpg) no-repeat transparent; width:94px; height:20px; vertical-align:top; margin-left:10px;}
+.rgmain .sub_btn{ background:url(../images/ht_btn_03.jpg) no-repeat transparent; width:67px; height:28px; line-height:28px; font-size:14px; vertical-align:top; color:#FFFFFF; font-weight:bold;}
+.rgmain td.tr_last{ padding-top:10px; padding-bottom:10px; text-align:center;}
+
+.rgmain input{height:18px; border:1px solid #86b5db; vertical-align:top;}
+
+.gold_page { width:440px; padding:16px 0 10px 160px;}
+.gold_page dl {float:left;}
+
+.gold_pa1 { width:18px; height:20px; line-height:20px;text-align:center; float:left; margin-right:4px;}
+.gold_pa2{ width:18px; height:20px; line-height:20px;text-align:center; background:url(../../images/gold/gold_page.jpg) repeat-x; border:1px solid #E5E5E5;float:left;margin-right:4px;}
+.gold_pa3{ width:50px; height:20px; line-height:20px;text-align:center; background:url(../../images/gold/gold_page.jpg) repeat-x; border:1px solid #E5E5E5;float:left;margin-right:4px;}
+
+/* 分页 */
+.d00{ background:#dff2f4; color:#990000;}
+
+dl, dt, dd {
+    float: left;
+}
+.list_page {
+	margin-top:20px;
+    padding: 20px 24px 25px 170px;
+    text-align: center;
+    width: 450px;
+	display:block;
+}
+.list_pon {
+    border: 1px solid #C9D7F1;
+    cursor: pointer;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 7px;
+    width: 50px;
+}
+.list_ptwo {
+    border: 1px solid #C9D7F1;
+    cursor: pointer;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 7px;
+    width: 20px;
+}
+/* 分页end  */

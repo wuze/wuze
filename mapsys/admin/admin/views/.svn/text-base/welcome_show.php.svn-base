@@ -1,0 +1,6 @@
+<?
+foreach($a as $k => $v)
+{
+	echo $k . '=='. $v;
+}
+?>

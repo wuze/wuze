@@ -1,0 +1,398 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 控制器描述数组
+DESCARRAY
+$simple['desc'] = '帮考新闻管理';
+$simple['actions']  = array(
+'index'=>array('name'=>'新闻列表', 'writelog' => 'file'),
+'create'=>array('name'=>'添加新闻'),
+'deletenews'=>array('name'=>'删除新闻'),
+'showdata'=>array('name'=>'显示新闻内容', 'writelog' => 'file'),
+'addnewscontent'=>array('name'=>'增加新闻内容'),
+'updatenewscontent'=>array('name'=>'更新新闻内容'),
+'newscate'=> array('name' => '新闻分类列表', 'writelog' => 'file'),
+'deletecates'=> array('name' => '删除新闻分类'),
+);
+DESCARRAY
+*/
+
+
+
+class News extends MY_Controller {
+
+	function __construct(){
+		parent::__construct();
+		$this->load->helper('url');
+	}
+
+
+	// 获取新闻列表
+	public function index(){
+		$pagesize=30;    // 用于处理分页列表  每页显示30条数据
+		$start = $this->uri->segment(2, intval($this->input->get('pn')));   //  其实位置
+
+		//搜索条件
+		$searchdata = $this->input->post('data');
+		
+		if($searchdata['title']){
+			$this->db->like('title', $searchdata['title']);
+		}
+		
+		if($searchdata['catid']){
+			$this->db->where('catid', $searchdata['catid']);
+		}
+		
+		if($searchdata['newscatid']){
+			$this->db->like('bk_news.newscatid', $searchdata['newscatid']);
+		}
+		$newslist['search'] = $searchdata;
+		
+		$this->db->select("*");
+		$this->db->from("news");
+		$this->db->join("bk_newscategory","bk_news.newscatid=bk_newscategory.newscatid","left");
+		//$this->db->order_by("bk_news.addtime"," DESC ");
+		$total = $this->db->count_all_results();    //  数据条数
+		
+		
+		
+
+		$this->db->join("bk_newscategory","bk_news.newscatid=bk_newscategory.newscatid","left");
+		$this->db->order_by("bk_news.addtime"," DESC");
+		$query = $this->db->get("news",$pagesize,$start);   //  用于显示分页
+		foreach( $query->result_array() as  $row ){
+			 $data[]  =  $row ; 
+		}
+		
+		$newslist['resultdata'] = $data;
+		$this->load->library('mypage');
+		$page = $this->mypage->show($total, $pagesize, site_url(array('c' => 'news', 'm' => 'index')), '', 2);
+		$newslist['page'] = $page;
+		
+		$this->db->select("*");
+		$this->db->from("newscategory");
+		
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$newscate[] = $row;
+		}
+		
+		$newslist['newscate'] = $newscate;
+				
+		//  年级信息
+		$this->db->select("catid,catname");
+		$this->db->from("categorys");
+		$this->db->where("parentid","0");
+		
+		$query = $this->db->get();
+		foreach( $query->result_array() as $row )
+			$classcate[] = $row;
+		
+		$newslist['classcate'] = $classcate;
+		//获取新闻列表
+		$this->load->view('news_contentlist',$newslist);
+	}
+	
+	//上传新闻图片
+	public function news_pic_upload(){
+
+		$config['upload_path'] = UPLOAD_IMAGE_PATH_SET.'newspic/';
+
+		$config['allowed_types'] = 'gif|jpg|png';
+
+		$config['max_size'] = FILE_UPLOAD_MAX;
+
+		$this->load->library('upload', $config);
+
+		$this->upload->do_upload();
+
+		$error = array('error' => $this->upload->display_errors());
+
+		$data['callback'] = "UPLOAD_CALLBACK";
+
+		$imgdata = $this->upload->data();
+
+		$data['filename'] = '/uploads/newspic/'.$imgdata['file_name'];
+
+		$this->load->view('upload_cross',$data);
+
+	}
+	
+	/*
+	// 显示新闻列表
+	public function display(){
+		$this->db->select("*");
+		$this->db->from("bk_news");
+		$this->db->join("bk_newscategory","bk_news.newscatid=bk_newscategory.newscatid","left");
+		$this->db->order_by("bk_news.newscatid","DESC");
+		
+		$query = $this->db->get();
+		
+		foreach ( $query->result_array() as $row ){
+			$data[] = $row;
+		}
+		
+		$newslist['resultdata'] = $data;
+		
+		
+		
+		$this->db->select("*");
+		$this->db->from("bk_newscategory");
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$newscate[] = $row;
+		}
+		$newslist['newscate']  = $newscate;
+		
+		
+		//  年级信息
+		$this->db->select("catid,catname");
+		$this->db->from("categorys");
+		$this->db->where("parentid","0");
+		
+		$query = $this->db->get();
+		foreach($query->result_array() as $row )
+			$classcate[] = $row;
+		$newslist['classcate'] = $classcate;
+		$this->load->view('news_contentlist',$newslist);
+	} 
+	*/
+	
+	// 删除一条新闻内容
+	public function deletenews($newsid){
+		$this->db->where('newsid',$newsid);
+		if ( $this->db->delete('bk_news') )
+			echo 1;   // delete success
+		else
+			echo 0;
+	}
+	
+	
+	//添加一条新闻
+	public function create(){
+		
+		// 新闻类型
+		$this->db->select("*");
+		$this->db->from("bk_newscategory");
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$newscate[] = $row;
+		}
+		$finaldata['newscate'] = $newscate;
+		
+		
+		//  年级信息
+		
+		$this->db->select("catid,catname");
+		$this->db->from("categorys");
+		$this->db->where("parentid","0");
+		
+		$query = $this->db->get();
+		foreach($query->result_array() as $row )
+			$classcate[] = $row;
+			
+		$finaldata['classcate'] = $classcate;
+		$this->load->view('news_addcontent', $finaldata);
+	}
+	
+	//  保存一条新闻
+	public function addnewscontent(){
+
+		$data = array();
+		
+		$data = $this->input->post('data');
+		$data['newscatid'] = $this->input->post("newscateid");
+		$data['newstitle'] = $this->input->post("newstitle");
+		$data['catid']     = $this->input->post("catid");
+		
+		$data['pic']       = $this->input->post('img_path');
+        $data['content']   = $this->input->post("content");
+        $data['time']   = $this->input->post("addtime");   //  pubtime 是发布之间， 可以认为修改的
+        $data['author']    = $data['author'] ? $data['author'] : $this->session->userdata('adminname');
+
+        $finaldata = array(
+               'title'         => $data['newstitle'],
+        	   'schoolid'      => $data['catid'],   //年级
+               'pic'		   => $data['pic'],
+               'clicks'		   => 0, 
+               'newscatid'     => $data['newscatid'],  // 新闻分类
+        	   'catid'         => $data['catid'],   //年级 
+               'authorid'      => $this->session->userdata('adminid'),
+        	   'author'   	   =>  $data['author'] ,
+        	   'source' 	   => $data['source'],
+      		   'description'   => $data['description'],
+        	   'content'       => $data['content'],
+               'addtime'       => time(),
+               'pubtime'       => strtotime($data['time'])
+
+            );
+		$this->db->insert('news', $finaldata);
+		showmessage('添加新闻成功', '', site_url(array('c' => 'news')));
+	}
+	
+	
+	//  用于显示指定ID号的新闻
+	public function showdata( $newsid ){
+		$this->db->select("*");
+		$this->db->from('bk_news');
+		$this->db->where('newsid',$newsid);
+		$query = $this->db->get();		
+		$data  = current($query->result_array());
+		$finaldata['data'] = $data;
+		
+		
+		$this->db->select("*");
+		$this->db->from("bk_newscategory");
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$newscate[] = $row;
+		}
+		
+		$finaldata['newscate']  = $newscate;		
+		
+		//  年级信息
+		$this->db->select("catid,catname");
+		$this->db->from("categorys");
+		$this->db->where("parentid","0");
+		
+		$query = $this->db->get();
+		foreach($query->result_array() as $row )
+			$classcate[] = $row;
+		
+		$finaldata['classcate'] = $classcate;
+		$this->load->view('news_updatecontent',$finaldata);
+	}
+	
+	//更新一条新闻信息
+	public function updatenewscontent(  ){
+		
+
+		$data = array();
+		$data = $this->input->post('data');
+		$data['newstitle'] = $this->input->post("newstitle");
+		$data['catid']     = $this->input->post("catid");
+        $data['content']   = $this->input->post("content");
+   		$data['pic']       = $this->input->post('img_path');
+        $data['addtime']   = $this->input->post("addtime");
+        $data['newscatid'] = $this->input->post("newscateid");
+        $data['newsid']    = $this->input->post("newsid");   // hidden 内容
+        
+        $finaldata = array(
+               'title'         => $data['newstitle'],
+               'newscatid'     => $data['newscatid'],
+        	   'catid'         => $data['catid'],
+               'pic'           => $data['pic'],
+        	   'content'       => $data['content'],
+         		'author'   	   =>  $data['author'] ,
+        	   'source' 	   => $data['source'],
+      		   'description'   => $data['description'],
+               'addtime'       => strtotime($data['addtime']),
+               'pubtime'       => time()
+            );
+            
+        
+		$this->db->where('newsid',$data['newsid']);
+		$this->db->update('bk_news', $finaldata);
+		
+		showmessage('修改新闻成功', '', site_url(array('c' => 'news')));
+	}
+	
+	/*
+	// 搜索内容
+	public	function searchnewscontent(){
+		
+		
+		$datas['s_newstitle']   = $this->input->post("s_newstitle");
+        $datas['s_newscatid']   = $this->input->post("s_newscatid");
+        $datas['s_catid']       = $this->input->post("s_catid");
+		$titlestr  = '1';
+		$newscatid = '1';
+		$catid     = '1';
+		
+   		if ( !empty($datas['s_newstitle']) ) 
+   		     $titlestr  = "a.title LIKE '%".$datas['s_newstitle']."%'"; 
+    	if ( !empty($datas['s_newscatid']) ) 
+   		     $newscatid = "a.newscatid=".$datas['s_newscatid'];
+   		if ( !empty( $datas['s_catid']) )
+   		     $catid     = "a.catid = ".$datas['s_catid'];
+  
+   		$sqlstr = "SELECT * FROM bk_news a, bk_newscategory b WHERE ".$titlestr.
+   				  " AND ".$newscatid." AND a.newscatid=b.newscatid AND  "
+   		          .$catid;
+   		    
+   		$query = $this->db->query( $sqlstr );
+		foreach( $query->result_array() as  $row ){
+			 $data[]  =  $row ; 
+			 
+		}
+		$newslist['resultdata'] = $data;
+
+		// 新闻分类
+		$this->db->select("*");
+		$this->db->from("bk_newscategory");
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$newscate[] = $row;
+		}
+		$newslist['newscate'] = $newscate;
+		
+		//  年级信息
+		$this->db->select("catid,catname");
+		$this->db->from("categorys");
+		$this->db->where("parentid","0");
+		
+		$query = $this->db->get();
+		foreach($query->result_array() as $row )
+			$classcate[] = $row;
+		
+		$newslist['classcate'] = $classcate;
+		
+		
+		$this->load->view('news_contentlist',$newslist);
+	}
+	*/
+	
+	
+	// 新闻分类
+	public  function  newscate(){
+		$getpostdata = $this->input->post("newscates");
+		
+		if( !empty( $getpostdata) ){
+			$finaldata = array('newscatname'=>$this->input->post('newscates') );
+			$this->db->insert('newscategory', $finaldata);
+		}
+		
+
+		$this->db->select('*');
+		$this->db->from("newscategory");
+		$query = $this->db->get();
+	
+		foreach( $row = $query->result_array()  as $row ){
+			$m[] = $row;
+		}
+	
+		$kk['resultdata'] = $m;
+		$this->load->view('news_newscategory',$kk);
+	}
+
+
+
+	// 删除新闻分类
+	public function deletecates( $catid ){
+		
+		$this->db->where('newscatid',$catid);
+		if ( $this->db->delete('bk_newscategory') )
+			echo 1;   // delete success
+		else
+			echo 0;
+	}
+}
+
+/* End of file news.php */
+/* Location: ./application/controllers/news.php */
+
+?>

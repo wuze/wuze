@@ -1,0 +1,194 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 用户管理权限
+ *
+ *
+ * Version: 1.0.0
+ * Web: http://www.bkw.cn/
+ * Copyright: 2011-2012 (yfyfj@qq.com)
+ * Last Modified: 2011-11-9 20:56
+ *
+ */
+
+/**
+ * 控制器描述数组
+ DESCARRAY
+ $simple['desc'] = '用户管理';
+ $simple['actions']  = array(
+ 'index'=>array('name'=>'用户列表', 'writelog' => 'file'),
+ 'create'=>array('name'=>'添加用户'),
+ 'edit'=>array('name'=>'修改用户'),
+ 'del'=>array('name'=>'删除用户'),
+ );
+ DESCARRAY
+ */
+class User extends MY_Controller
+{
+
+
+	var $seo_title = '用户管理';
+
+	/**
+	 * 用户列表
+	 * @author jagy
+	 * @version 1.0
+	 * @last 2011-11-14 15:51
+	 */
+	public function index(){
+
+		$this->seo_title = '用户列表';
+
+		$this->db->like('adminname' , $this->input->get('name'));
+		$this->db->from('admin');
+		$total = $this->db->count_all_results();
+		
+		$this->db->join('roles', 'role_id = gid', 'left');
+		$query = $this->db->get('admin', $limit, PAGE_SIZE);
+		foreach ($query->result() as $row)
+		{
+			$list[] = $row;
+		}
+		$data['list'] = $list;
+		
+		$this->load->library('mypage');
+		$this->mypage->show($total, PAGE_SIZE, site_url(array('c'=>'user')));
+		$this->load->view('default/user_list', $data);
+	}
+
+	/**
+	 * 添加用户
+	 * @author jagy
+	 * @version 1.0
+	 * @last 2011-11-14 15:51
+	 */
+	public function create(){
+
+		$this->seo_title = '添加用户';//标题
+
+		//检测是否有此用户名
+		$checkname = $this->input->post("checkname");
+		if($checkname){
+			$result = $this->__check_name($checkname);
+			if($result){
+				die("1");
+			}
+			else{
+				die("0");
+			}
+				
+		}
+		//检测结束
+
+		$post_data = $this->input->post('data');
+		if(!empty($post_data)){
+			
+			if(!($post_data['username'])){
+				showmessage("用户名不能为空");
+			}
+			if(!($post_data['password']) && $post_data['adminid']){
+				showmessage("用户密码不能为空");
+			}
+			if(!($post_data['gid'])){
+				showmessage("请选择用户组");
+			}
+			
+			
+				
+			$save_data = array('adminname' => $post_data['username'],
+								'adminpass' => md5($post_data['password']),
+								'gid' => $post_data['gid'],
+								'addtime' => time()
+			);
+				
+				
+			$row =  $this->__check_name($save_data['adminname']);
+			
+			if($row){
+				$this->db->where('adminname', $save_data['adminname']);
+				$this->db->update("admin", $save_data);
+				showmessage("修改用户成功", "", site_url( array('c' => 'user', 'm' =>'index')) );
+			}
+			else{
+				$this->db->insert("admin", $save_data);
+				showmessage("添加用户成功", "", site_url( array('c' => 'user', 'm' =>'index')) );
+			}
+			
+			
+				
+		}
+
+
+		$data['roles'] = $this->__get_roles();
+		
+		$this->load->view('default/user_add', $data);
+	}
+
+	//检测用户 名是否存在
+	function __check_name($checkname){
+		$this->db->where("adminname", $checkname);
+		$query = $this->db->get("admin");
+		$result = $query->row();
+		return $result;
+	}
+	
+	//获取用户组
+	function __get_roles(){
+		
+		$query = $this->db->get("roles");
+		foreach ($query->result() as $row)
+		{
+			$roles[$row->role_id] = $row;
+		}
+		return  $roles;
+	}
+
+	/**
+	 * 修改用户
+	 * @author jagy
+	 * @version 1.0
+	 * @last 2011-11-14 15:51
+	 */
+	public function edit(){
+
+		$this->seo_title = '修改用户';//标题
+		
+		$adminid =	$this->input->get('adminid');
+		
+		if(!$adminid){
+			showmessage("请选择需要修改的用户",  '', site_url(array('c' => 'user', 'm' => 'index')));
+		}
+		
+		$query = $this->db->get_where('admin', array('adminid' => $adminid));
+		$row = $query->row();
+		$data['user'] = $row;
+		$data['roles'] = $this->__get_roles();
+
+		$this->load->view('default/user_add', $data);
+	}
+
+	/**
+	 * 删除用户
+	 * @author jagy
+	 * @version 1.0
+	 * @last 2011-11-14 15:51
+	 */
+	public function del(){
+		
+		$adminid = $this->input->get('adminid');
+		
+		if(!$adminid){
+			showmessage('请选择需要删除的用户');
+		}
+		if($adminid == $this->session->userdata('adminid')){
+			showmessage("不能删除自己");
+		}
+		$this->db->where('adminid', $adminid);
+		$this->db->delete('admin');
+		
+		showmessage('删除成功', '', site_url(array('c'=>'user'))  );
+	}
+
+}
+
+/* End of file user.php */
+/* Location: ./admin/controllers/user.php */

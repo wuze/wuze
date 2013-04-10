@@ -1,0 +1,67 @@
+<?php $this->load->view('header_m'); ?>
+<style  type="text/css">
+.bdrcontent{
+	border:1px solid #FF8E00;
+	padding:1em;
+}
+</style>
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<h1>科目列表</h1>
+</div>
+<div class="mainbox">
+
+<form method="post" action="<?php echo site_url('/course/addsubject/')?>">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+	<caption class="capcenter">添加新科目</caption>
+	<tr>
+		<th>新科目名：</th>
+		<td><input type="text" name="newsubject"/>
+		<input type="submit" style="cursor:pointer;" class="sub_btn mr10" value="添加" />
+		</td>
+	</tr>
+	</table>
+	</form>
+
+
+	<div style="margin-top:10px;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+		<caption class="capcenter">当前已有科目</caption>
+		<tbody>
+			<tr>
+			
+				<th >科目ID</th>
+				<th >科目名</th>
+				<th>管理</th>
+			</tr>
+		</tbody>
+	<?php  foreach ($resultdata as $key=>$value): ?>
+	<?php $mykey = $key+1; ?>
+	<tr style="text-align:center;" id="tr_<?php echo $value['courseid']?>">
+		
+		<td><?php echo $value[courseid] ?></td>
+		<td style="text-align:center;"><?php echo $value[coursename] ?></td>
+		<td><a href="#" onclick="delcates(<?php echo $value[courseid] ?>)" >删除该科目</a></td>
+	<?php endforeach;?>
+	</table>
+	</div>
+</div>
+
+</div>
+<script type="text/javascript">
+
+function 	delcates(newsid){
+	$.get('/admin/index.php/course/deletecourse/'+newsid,{},function(r){
+		if (r.substr(0) == 1) {
+			$('#tr_'+newsid).hide(300);
+		}
+		else{			
+			alert("暂时不能删除");	
+		}	
+	});
+	
+}
+</script>
+<?php $this->load->view('footer'); ?>

@@ -1,0 +1,193 @@
+<?
+/**
+ * 后台菜单管理权限
+ * 关联文件：core/controller.php  /core/rbac.php
+ *
+ * Version: 1.0.0
+ * Web: http://www.bkw.cn/
+ * Copyright: 2011-2012 (flourish@msn.cn)
+ * Last Modified: 2011/11/21
+ *
+ */
+
+/**
+ * 控制器描述数组
+DESCARRAY
+$simple['desc'] = '后台日志管理';
+$simple['actions']  = array(
+'ilist'=>array('name'=>'查看日志', 'writelog' => 'file'),
+'del'=>array('name'=>'删除日志'),
+);
+DESCARRAY
+*/
+class adminlogmanage extends MY_Controller
+{
+	public function adminlogmanage()
+	{
+		parent::__construct();
+		$this->load->model('adminlogmanage_model', 'adminlog');
+		$this->easyui = 'easyui/';
+	}
+
+	public function easyui()
+	{
+		$this->load->view('easyui/datagrid');
+	}
+
+	/**
+	 * 菜单列表
+	 *
+	 **/
+	public function ilist()
+	{
+		$datatype = $this->uri->segment(3,$this->input->get('datatype'));
+
+		$pageno = $this->input->post('pageNumber');
+		$pageSize = $this->input->post('pageSize');
+		$data['title'] = '日志列表';
+		$data['pageno'] = $pageno = empty($pageno)?1:intval($pageno);
+		$where = '';//"logid < 40";
+		$data['pageSize'] = empty($pageSize)?15:intval($pageSize);
+		$data['from'] = $data['offset'] = ($pageno-1)*$data['pageSize'];
+		$data['to'] = $data['from'] + $data['pageSize'];
+
+		$this->load->helper('url');
+		
+		$data['add_url'] = '';//anchor(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'add', ), '添加');
+		$data['ilist_array'] = array('logid' => 'ID','adminname' => '登录名', 'logip' => 'IP', 'logtime' => '访问时间', 'url' => '地址', 'controller_name' => '文件名', 'action_name' => '方法名', 'summary' => '备注');
+		$data['ilist_array_ext'] = array('controller_action' => '页面功能', 'del' => '删除');
+		
+		
+		if(!empty($this->easyui) && empty($datatype))
+		{//如果是easyui则加载
+			$data['columns'] = '[[
+				{"field":"adminname","title":"登录名","width":"80"},
+				{"field":"controller_action","title":"功能名称","width":"80"},
+				{"field":"logip","title":"IP","width":"80"},
+				{"field":"logtime","title":"访问时间","width":"120"},
+				{"field":"url","title":"url地址","width":"350"},
+				{"field":"summary","title":"备注","width":"550"},
+				{"field":"del","title":"删除","width":"40"}
+				]]';
+				//{"field":"controller_name","title":"文件名","width":"80"},{"field":"action_name","title":"方法名","width":"80"},
+
+			$data['toolbar'] = "[{text:'删除',iconCls:'icon-remove',handler:function(){getSelections();}}]";//{text:'添加',iconCls:'icon-add',handler:function(){alert('add')}},{text:'删除',iconCls:'icon-remove',handler:function(){alert('del')}}
+
+			$data['fozencolumns'] = "[[
+	                {field:'logid',checkbox:true}
+				]]";//,{title:'code',field:'code',width:80,sortable:true}
+
+
+
+			
+			//$tmp_result = $this->adminlog->result($where);
+			$rowcount_args = $this->adminlog->rowcount($where);
+			$data['total'] = intval($rowcount_args[0]['rowcount']);			
+			$data['pages'] = ceil( $data['total']/ $data['pageSize']);
+
+
+			$this->load->view($this->easyui.'rolemanage_ilist', $data);return ;
+		}
+
+		$datatype = $this->uri->segment(3,$this->input->get('datatype'));
+
+		//$pageno = 1;
+		$where = '';//"logid < 40";
+		$tmp_result = $this->adminlog->result($where, $data['pageSize'], $data['offset']);
+
+		$data['args'] = array();
+		if(!empty($tmp_result)){
+
+!defined('ROOTPATH') && define('ROOTPATH', APPPATH);
+!defined('ACCESS_FILE_PATH') && define('ACCESS_FILE_PATH',ROOTPATH.'sitedata'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'admincp'.DIRECTORY_SEPARATOR);
+			$access = require(ACCESS_FILE_PATH.'./access_list.php');
+			foreach($tmp_result as $k => $v)
+			{
+				foreach(array_keys($v) as $kv)
+				{
+					if(in_array($kv, array_keys($data['ilist_array'])))
+					{
+						if($kv == 'logtime')
+						{
+							$data['args'][$k][$kv] = date('Y-m-d H:i:s', $v[$kv]);							
+						}else{
+							$data['args'][$k][$kv] = $v[$kv];
+						}
+					}
+				}
+
+				$attrabute = "onclick='dialog_open(this.href);return false;'";
+				
+				foreach($data['ilist_array_ext'] as $iek => $iev)
+				{
+
+					switch($iek)
+					{
+						case 'controller_action':
+
+							$data['args'][$k][$iek] = '';
+							$controller_action = $access[$v['controller_name']]['actions'][$v['action_name']];
+							if(!empty($controller_action))
+							{
+								$data['args'][$k][$iek] = $controller_action['name'];
+
+							}
+
+						break;
+
+						case 'del':
+						
+							$attrabute = "onclick=\"javascript:return confirm('你确定要删除该信息？');\"";
+							$data['args'][$k][$iek] = anchor(array($this->config->config['controller_trigger'] => 'adminlogmanage', $this->config->config['function_trigger'] => $iek, $this->adminlog->_primarykey => $v[$this->adminlog->_primarykey]), $iev, $attrabute);
+						break;
+						default:
+							$data['args'][$k][$iek] = anchor(array($this->config->config['controller_trigger'] => 'adminlogmanage', $this->config->config['function_trigger'] => $iek, $this->adminlog->_primarykey => $v[$this->adminlog->_primarykey]), $iev, $attrabute);
+						break;
+					}
+				}
+			}
+		}
+
+		if($datatype == 'json')
+		{//获取json格式的数据
+			echo json_encode(array('rows'=>$data['args']));exit();
+		}
+		$this->load->view('rolemanage_ilist', $data);
+	}
+
+	/**
+	 * 菜单删除
+	 *
+	 */
+
+	public function del()
+	{
+		$id_str = $this->uri->segment(3,$this->input->get('logid'));
+		
+		$id_str = empty($id_str)?$this->input->post('logid'):$id_str;
+		if(empty($id_str))
+		{
+			showmessage('参数错误!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'adminlogmanage', $this->config->config['function_trigger'] => 'ilist')));
+		}
+		
+		$data['title'] = '菜单删除--将删除该菜单下所有子菜单';
+
+		$ids = explode(':', $id_str);
+		foreach($ids as $id)
+		{
+			$where = "logid ={$id}";
+
+
+			$result = $this->adminlog->del($where);
+		}
+		if(count($ids)>1)
+		{
+			echo json_encode(array('status' => 1, 'msg' => '删除成功'));exit();
+		}
+
+		showmessage('删除成功!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'adminlogmanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+	
+	}
+	
+}
+?>

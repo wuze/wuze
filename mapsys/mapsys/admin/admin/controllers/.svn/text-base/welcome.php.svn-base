@@ -1,0 +1,115 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Welcome extends MY_Controller {
+
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -  
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in 
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see http://codeigniter.com/user_guide/general/urls.html
+	 */
+	
+	var $manager_menu;
+	
+	public function __construct(){
+		parent::__construct();
+		$this->load->library('session');
+		
+		if(empty($this->_globmenu))
+		{
+			showmessage('登录已超时，请重新登录', '', site_url(array('c' => 'login')));
+		}
+
+		if(empty($this->_globmenu[1]))
+		{
+			print_r($this->_globmenu);
+			echo '菜单错误';exit();
+		}
+
+		foreach($this->_globmenu as $k => $v)
+		{
+			if(!empty($v['pid']))
+			{
+				$data[$v['pid']][] = $v;
+			}
+		}
+		$this->manager_menu = $data;
+		
+	}
+	
+	/**
+	 * 后台首页
+	 * @author jagy
+	 * @version 1.0
+	 * @last 2011-11-10 17:45
+	 */
+	public function index()
+	{
+		
+		$this->load->library('encrypt');
+		//获取cookie前缀
+		if (config_item('cookie_prefix') != '')
+		{
+			$prefix = config_item('cookie_prefix');
+		}
+		
+		$cookieloginname = $this->input->cookie($prefix.'loginname');
+		
+		$this->loginname = $this->encrypt->decode($cookieloginname);
+			
+	
+		if($this->loginname){
+			$this->load->view('admin_index');
+		}
+		else{
+			$this->load->helper('url');
+			redirect('/login');
+		}
+		
+	}
+	
+	/**
+	 * 左侧的菜单
+	 * @author jagy
+	 * @version 1.0
+	 * @last 2011-11-10 14:39
+	 */
+	public function leftmenu($to=""){
+		
+		if(!$to){
+			$to = 'manager';
+		}
+		$this->data = array("to" => $to);
+		
+		$this->load->view("admin_leftmenu");
+	}
+	
+	/**
+	 * 默认系统首页的显示
+	 * @author jagy
+	 */
+	public function main(){
+		
+		$this->load->view("admin_main");
+	}
+
+	public function show()
+	{
+		$data = array('a' => array('m' => 'hello a'), 'b' => 'hello b');
+		$this->load->model('welcome_model', 'welcomemodel');
+		$data['a']['mm'] = $this->welcomemodel->a();
+		$this->load->view('welcome_show', $data);
+	}
+}
+
+/* End of file welcome.php */
+/* Location: ./application/controllers/welcome.php */

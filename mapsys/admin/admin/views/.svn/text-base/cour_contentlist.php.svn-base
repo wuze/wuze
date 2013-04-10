@@ -1,0 +1,103 @@
+<?php $this->load->view('header_m'); ?>
+<style  type="text/css">
+.bdrcontent{
+	border:1px solid #FF8E00;
+	padding:1em;
+}
+</style>
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<h1>课程列表</h1>
+</div>
+<div class="mainbox">
+
+<form method="post" action="<?php echo site_url('/course/addcourse/')?>">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+	<caption class="capcenter">增加课程</caption>
+	
+	<tr>
+		<th>所在年级：</th>
+		<td>
+		<select name="classid"  size="1" class="gold_sapji a" style="width:120px;">
+		<option value=''>请选择年段</option>
+		<?php foreach ($classcate as $key=>$value): ?>
+		<option value='<?php echo $value['catid']?>' ><?php echo $value['catname']?></option>
+		<?php  endforeach; ?>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>课程名称：</th>
+		<td>		
+		<select name="courseid"  size="1" class="gold_sapji a" style="width:120px;">
+		<option value=''>请选择课程</option>
+		<?php foreach ($coursecate as $key=>$value): ?>
+		<option value='<?php echo $value['courseid']?>' ><?php echo $value['coursename']?></option>
+		<?php  endforeach; ?>
+		</select></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tr_last">
+		<input type="submit" style="cursor:pointer;" class="sub_btn mr10" value="增加" />
+		</td>
+	</tr>
+	</table>
+	</form>
+
+
+
+
+
+<div style="margin-top: 10px;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+		<caption class="capcenter">课程列表</caption>
+		<tbody>
+			<tr>
+				<th >序号</th>
+				<th >年级</th>
+				<th>课程名字</th>
+				<th >管理</th>
+			</tr>
+		</tbody>
+		
+		<?php if (!empty( $resultdata)) {?>
+		<?php  foreach ($resultdata as $key=>$value): ?>
+		<?php $mykey = $key+1; ?>
+		<tr id="tr_<?php echo $value['rid']?>">
+			<td style="text-align:center;"><?php echo $mykey?></td>
+			<td style="text-align:center;"><?php echo $value[catname] ?></td>
+			<td style="text-align:center;"> <?php echo $value[coursename]?> </td>
+			<td style="text-align:center;">
+			<a  href="#" onclick="delcourse(<?php echo $value['rid'] ?>)">删除该课程</a>
+			</td>
+		</tr>	
+		<?php endforeach;?>
+		<?php } else { ?>
+		<tr style="text-align: center;color:red;" >
+		<td COLSPAN="7" >暂时没有搜索到符合条件的数据</td>
+		</tr>
+		<?php }?>
+	</table>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+function 	delcourse(newsid){
+	$.get('/admin/index.php/course/delcourse/'+newsid,{},function(r){
+		if (r.substr(0) == 1) {
+			$('#tr_'+newsid).hide(300);
+		}
+		else{			
+			alert("暂时不能删除");	
+		}	
+	});
+	
+}
+</script>
+
+<?php $this->load->view('footer'); ?>

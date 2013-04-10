@@ -1,0 +1,232 @@
+<?php
+/**
+ * 角色权限管理
+ * 关联文件：core/controller.php  /core/rbac.php
+ *
+ * Version: 1.0.0
+ * Web: http://www.bkw.cn/
+ * Copyright: 2011-2012 (flourish@msn.cn)
+ * Last Modified: 20011-11-9 20:56
+ *
+ */
+
+/**
+ * 控制器描述数组
+DESCARRAY
+$simple['desc'] = '角色权限管理';
+$simple['actions']  = array(
+'ilist'=>array('name'=>'查看角色列表'),
+'add'=>array('name'=>'添加角色'),
+'edit'=>array('name'=>'修改角色'),
+'del'=>array('name'=>'删除角色'),
+);
+DESCARRAY
+*/
+class Rolemanage extends MY_Controller
+{
+	public function Rolemanage()
+	{
+		parent::__construct();
+		$this->load->model('rolemanage_model', 'role');
+		$this->easyui = 'easyui/';//载入easyui框架
+	}
+
+	/**
+	 * 角色列表
+	 *
+	 */
+	public function ilist()
+	{
+		$datatype = $this->uri->segment(3,$this->input->get('datatype'));
+
+		$data['title'] = '角色列表';
+
+		$this->load->helper('url');
+		
+		$data['add_url'] = anchor(array($this->config->config['controller_trigger'] => 'rolemanage', $this->config->config['function_trigger'] => 'add', ), '添加');
+		$data['ilist_array'] = array('role_id' => '角色ID', 'rolename' => '角色名称', 'description' => '备注');
+		$data['ilist_array_ext'] = array('edit' => '修改', 'right' => '权限管理', 'del' => '删除');
+
+		if(!empty($this->easyui) && empty($datatype))
+		{//如果是easyui则加载
+			$data['columns'] = '[[
+				{"field":"rolename","title":"角色名称","width":"200"},
+				{"field":"description","title":"备注","width":"80"},
+				{"field":"edit","title":"修改","width":"40"},
+				{"field":"right","title":"权限管理","width":"80"},
+				{"field":"del","title":"删除","width":"40"}
+				]]';
+				
+			$data['toolbar'] = "[
+					{text:'添加',iconCls:'icon-add',handler:function(){dialog_open('".site_url(array($this->config->config['controller_trigger'] => 'rolemanage', $this->config->config['function_trigger'] => 'add', ))."')}}
+					]";//,{text:'删除',iconCls:'icon-remove',handler:function(){alert('del')}}
+
+			$data['fozencolumns'] = "[[
+	                {field:'role_id',checkbox:true}
+				]]";//,{title:'code',field:'code',width:80,sortable:true}
+
+			$this->load->view($this->easyui.'rolemanage_ilist', $data);return ;
+		}
+
+
+
+		$tmp_result = $this->role->result();
+
+		$data['args'] = array();
+		if(!empty($tmp_result)){
+			foreach($tmp_result as $k => $v)
+			{
+				foreach(array_keys($v) as $kv)
+				{
+					if(in_array($kv, array_keys($data['ilist_array'])))
+					{
+						$data['args'][$k][$kv] = $v[$kv];
+					}
+				}
+				
+				$attrabute = "onclick='dialog_open(this.href);return false;'";
+
+				foreach($data['ilist_array_ext'] as $iek => $iev)
+				{
+
+					switch($iek)
+					{
+						case 'edit':
+							$data['args'][$k][$iek] = anchor(array($this->config->config['controller_trigger'] => 'rolemanage', $this->config->config['function_trigger'] => $iek, $this->role->_primarykey => $v[$this->role->_primarykey]), $iev, $attrabute);
+						break;
+
+						case 'right':
+							$attrabute = "onclick='dialog_open(this.href, \"auto\");return false;'";
+
+							$data['args'][$k][$iek] = anchor(array($this->config->config['controller_trigger'] => 'rightmanage', $this->config->config['function_trigger'] => 'addRoleAccess', $this->role->_primarykey => $v[$this->role->_primarykey]), $iev, $attrabute);
+						break;
+
+						case 'del':
+							$attrabute = "onclick=\"javascript:return confirm('你确定要删除该信息？');\"";
+							$data['args'][$k][$iek] = anchor(array($this->config->config['controller_trigger'] => 'rolemanage', $this->config->config['function_trigger'] => $iek, $this->role->_primarykey => $v[$this->role->_primarykey]), $iev, $attrabute);
+						break;
+						default:
+							$data['args'][$k][$iek] = anchor(array($this->config->config['controller_trigger'] => 'rolemanage', $this->config->config['function_trigger'] => $iek, $this->role->_primarykey => $v[$this->role->_primarykey]), $iev, $attrabute);
+						break;
+					}
+					
+				}
+			}
+		}
+
+		if($datatype == 'json')
+		{//获取json格式的数据
+			echo json_encode(array('rows'=>$data['args']));exit();
+		}
+
+		$this->load->view('rolemanage_ilist', $data);
+	}
+
+	/**
+	 * 角色编辑
+	 *
+	 */
+	public function edit()
+	{
+		
+		$role_id = $this->uri->segment(3,$this->input->get('role_id'));
+		if(empty($role_id))
+		{
+			showmessage('参数错误!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')));
+		}
+
+		$data['title'] = '角色修改';
+
+
+		$post_data = $this->input->post('data');
+		
+		$where = "role_id ={$role_id}";
+
+		if(!empty($post_data))
+		{
+			$result = $this->role->update($post_data, $where);
+			
+			if(!empty($result))
+			{
+				showmessage('修改成功!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+			}else{
+				showmessage('修改失败!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+			}
+		}
+
+		$tmp_result = $this->role->result($where);
+		$tmp_result = current($tmp_result);
+		$this->load->helper('url');
+		$this->load->helper('form');
+		$data['edit_array'] = array(
+			array('tag' => form_open(site_url(array($this->config->config['controller_trigger'] => $this->router->class, $this->config->config['function_trigger'] => $this->router->method, 'role_id' => $role_id)))),
+			array('tag' => form_hidden('data[role_id]', $tmp_result['role_id'])), 
+			array('label' => '角色名称', 'tag' => form_input('data[rolename]', $tmp_result['rolename'])),
+			array('label' => '备注', 'tag' => form_input('data[description]', $tmp_result['description'])),
+			array('label' => '&nbsp;', 'tag' => form_submit('submit', '确定', 'class="sub_btn mr10" ')),
+			array('tag' => form_close()),
+			);
+		$this->load->view('rolemanage_edit', $data);
+	}
+
+	/**
+	 * 角色删除
+	 *
+	 */
+	public function del()
+	{
+		$role_id = $this->uri->segment(3,$this->input->get('role_id'));
+		if(empty($role_id))
+		{
+			showmessage('参数错误!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+		}
+
+		$where = "role_id ={$role_id}";
+
+		$data['title'] = '角色删除';
+		$result = $this->role->del($where);
+
+		if(!empty($result))
+		{
+			showmessage('删除成功!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+		}else{
+			showmessage('删除失败!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+		}
+	}
+
+	/**
+	 * 角色添加
+	 *
+	 */
+	public function add()
+	{
+		$data['title'] = '角色添加';
+
+		$post_data = $this->input->post('data');
+
+		if(!empty($post_data['rolename']))
+		{
+			$result = $this->role->add($post_data);
+			
+			if(!empty($result))
+			{
+				showmessage('添加成功!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+			}else{
+				showmessage('添加失败!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+			}
+		}
+
+		$this->load->helper('url');
+		$this->load->helper('form');
+
+		$data['edit_array'] = array(
+			array('tag' => form_open(site_url(array($this->config->config['controller_trigger'] => $this->router->class, $this->config->config['function_trigger'] => $this->router->method)))),
+			array('label' => '角色名称', 'tag' => form_input('data[rolename]')),
+			array('label' => '备注', 'tag' => form_input('data[description]')),
+			array('label' => '&nbsp;', 'tag' => form_submit('submit', '确定', 'class="sub_btn mr10" ')),
+			array('tag' => form_close()),
+			);
+		$this->load->view('rolemanage_add', $data);
+	}
+}
+?>

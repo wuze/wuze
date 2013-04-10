@@ -1,0 +1,105 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ *  信息收集管理
+ *  @author jagy
+ *  @version 1.0
+ *  @last 2011-11-16 14:53
+ */
+/**
+ * 控制器描述数组
+ DESCARRAY
+ $simple['desc'] = '信息收集管理';
+ $simple['actions']  = array(
+ 'index'=>array('name'=>'Email收集列表', 'writelog' => 'file'),
+ 'delemail'=>array('name'=>'删除Email订阅'),
+ 'remind'=>array('name'=>'信息收集框信息列表', 'writelog' => 'file'),
+
+ );
+ DESCARRAY
+ */
+class Contact extends MY_Controller {
+
+	
+	/**
+	 * Email收集列表
+	 * 
+	 */
+	public function index(){
+		
+		$data = $this->input->post('data');
+		
+		if($data['email']){
+			$this->db->where('email', $data['email']);
+		}
+		//当前的页面的开始条数
+		$pn = $this->input->get('pn');
+		
+		//获取总数
+		$this->db->from('emails');		
+		$total = $this->db->count_all_results();
+		//加载分页类
+		$this->load->library('mypage');
+		$data['page'] = $this->mypage->show($total, PAGE_SIZE, site_url(array('c' => 'contact', 'm' => 'index', 'email' => $data['email'])));
+		
+		$query = $this->db->get('emails', PAGE_SIZE, $pn);
+		
+		foreach ($query->result() as $row){
+			$list[] = $row;
+		}
+		
+		$data['list'] = $list;
+
+		$this->load->view('default/contact_index', $data);
+	}
+	
+	/**
+	 * 删除Email订阅
+	 * @author jagy
+	 */
+	function delemail(){
+		$email = $this->input->get('email');
+		if(!$email){
+			showmessage('请选择您需要删除的email');
+		}
+		
+		$this->db->delete('emails', array('email' => $email));
+		showmessage('删除成功', '', site_url( array('c' => 'contact' , 'm' =>'index')) );
+	}
+	
+	/**
+	 * 信息收集框信息列表
+	 * 
+	 */
+	function remind(){
+		
+		$data = $this->input->post('data');
+		
+		if($data['email']){
+			$this->db->where('email', $data['email']);
+		}
+		if($data['name']){
+			$this->db->where('name', $data['name']);
+		}
+		//当前的页面的开始条数
+		$pn = $this->input->get('pn');
+		
+		//获取总数
+		$this->db->from('remindusers');		
+		$total = $this->db->count_all_results();
+		
+		//加载分页类
+		$this->load->library('mypage');
+		$data['page'] = $this->mypage->show($total, PAGE_SIZE, site_url(array('c' => 'contact', 'm' => 'remind', 'email' => $data['email'], 'name' => $data['name'])));
+		
+		$query = $this->db->get('remindusers', PAGE_SIZE, $pn);
+		
+		foreach ($query->result() as $row){
+			$list[] = $row;
+		}
+		
+		$data['list'] = $list;
+
+		$this->load->view('default/remind_index', $data);
+	}
+}

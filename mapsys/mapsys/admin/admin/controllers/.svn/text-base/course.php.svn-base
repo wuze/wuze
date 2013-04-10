@@ -1,0 +1,388 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * Add By LSW
+ * 2011-11-14 17:01:55
+ */
+
+/**
+ * 控制器描述数组
+ DESCARRAY
+ $simple['desc'] = '帮考课程辅导';
+ $simple['actions']  = array(
+ 'index'=>array('name'=>'课程列表', 'writelog' => 'file'),
+ 'search'=>array('name'=>'课程搜索'),
+ 'addcourse'=>array('name'=>'对应年级增加课程', 'writelog' => 'file'),
+ 'addsubject'=>array('name'=>'添加科目'),
+
+ 'deletecourse'=>array('name'=>'删除科目'),
+ 'delcourse'=>array('name'=>'删除年级对应课程'),
+ 'delclass'=>array('name'=>'删除教学内容'),
+ 'coursetutor'=>array('name'=>'课程辅导列表', 'writelog' => 'file'),
+ 'showsubject'=>array('name'=>'显示课程', 'writelog' => 'file'),
+
+
+ 'editclass'=>array('name'=>'编辑辅导课程'),
+ 'addclass'=>array('name'=>'增加辅导课程'),
+ 'delclass'=>array('name'=>'删除辅导内容'),
+ 'showdata'=>array('name'=>'修改辅导内容'),
+ 'updateclass'=>array('name'=>'修改辅导课程'),
+ );
+ DESCARRAY
+ */
+
+
+class Course extends MY_Controller{
+
+	function __construct()
+	{
+		parent::__construct();
+		//$this->load->database();//链接数据库
+	}
+
+	 
+	public function index(){
+		$this->db->select("a.rid,a.coursename, a.courseid,a.catid,a.parentid,b.catname,b.addtime");
+		$this->db->from("courseofclass a");
+		$this->db->join("categorys b","b.catid=a.catid","left");
+		$this->db->order_by("b.parentid,a.catid","ASC");
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$resultdata[] = $row;
+		}
+		$finaldata['resultdata'] = $resultdata;
+
+		//  所有课程
+		$this->db->select("*");
+		$this->db->from("course");
+		$query = $this->db->get();
+		foreach( $query->result_array() as $row )
+		$coursecate[] = $row;
+		$finaldata['coursecate'] = $coursecate;
+
+
+		// 所在年级
+		$this->db->select("*");
+		$this->db->from("categorys");
+		//$this->db->where_in("parentid",array('1','2','3'));
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row )
+			$classcate[] = $row;
+		$finaldata['classcate'] =$classcate;
+		$this->load->view("cour_contentlist",$finaldata);
+	}
+
+
+	//  搜索课程信息
+	public	function search(){
+			
+		$data['subject'] = $this->input->post('subject');   // 科目
+		$data['grade']   = $this->input->post('gradeid');
+		$data['class']   = $this->input->post('classid');
+			
+		$subjectstr      =  $grade =  $class = 1;
+			
+		if ( !empty($data[subject]) )
+		$subjectstr = "";
+
+		$this->load->view("cour_contentlist", $finaldata);
+	}
+
+	//  对应年级增加一门课程
+	public function  addcourse(){
+			
+		$data['courseid']   = $this->input->post('courseid');
+		$data['classid']    = $this->input->post('classid');
+			
+		// 检验了是否会重复加入的问题
+		if ( !empty( $data['courseid']) && !empty($data['classid']) ){
+
+
+				
+			$this->db->select(" COUNT(*) as cnt ");
+			$this->db->from("courseofclass");
+			$this->db->where("catid",$data['classid']);
+			$this->db->where("courseid",$data['courseid']);
+
+			$query = $this->db->get();
+			$row = $query->result_array();
+
+			if( $row[0]['cnt'] == 0 ){
+				//从category表中拿取数据
+				$this->db->select('catid,parentid');
+				$this->db->from('categorys');
+				$this->db->where('catid',$data['classid']);
+				$this->db->limit(1);
+				$query = $this->db->get();
+				$arow = $query->result_array() ;
+					
+				$this->db->select('coursename');
+				$this->db->from('course');
+				$this->db->where('courseid',$data['courseid']);
+				$this->db->limit(1);
+				$query = $this->db->get();
+				$brow = $query->result_array() ;
+
+					
+				$insetarr = array('courseid'=>$data['courseid'],
+									  'coursename'=>$brow[0]['coursename'],
+									  'catid'=>$data['classid'],
+					                  'parentid'=>$arow[0]['parentid']);
+					
+				$this->db->insert('courseofclass', $insetarr);
+			}
+			else 
+				showmessage("数据库中已存在该数据");
+		}
+			
+			
+		$this->db->select("a.rid,a.coursename, a.courseid,a.catid,a.parentid,b.catname,b.addtime");
+		$this->db->from("courseofclass a");
+		$this->db->join("categorys b","b.catid=a.catid","left");
+		$this->db->order_by("b.parentid,a.catid","ASC");
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row ){
+			$resultdata[] = $row;
+		}
+		$finaldata['resultdata'] = $resultdata;
+
+		//  所有课程
+		$this->db->select("*");
+		$this->db->from("course");
+		$query = $this->db->get();
+		foreach( $query->result_array() as $row )
+		$coursecate[] = $row;
+		$finaldata['coursecate'] = $coursecate;
+
+
+		// 所在年级
+		$this->db->select("*");
+		$this->db->from("categorys");
+		//$this->db->where_in("parentid",array('1','2','3'));
+		$query = $this->db->get();
+
+		foreach( $query->result_array() as $row )
+		$classcate[] = $row;
+		$finaldata['classcate'] =$classcate;
+
+		$this->load->view("cour_contentlist",$finaldata);
+	}
+
+
+	// 添加科目
+	public function addsubject(){
+			
+		$data['coursename'] = $this->input->post('newsubject');
+		if ( !empty($data['coursename']) ){
+			$this->db->select(" COUNT('*') as cnt");
+			$this->db->from("course");
+			$this->db->where("coursename",$data['coursename']);
+
+			$query = $this->db->get();
+
+			$row = $query->result_array();
+			if ($row[0]['cnt'] == 0){
+				$this->db->insert('course',array('coursename'=>$data['coursename']));
+			}
+		}
+			
+		$this->db->select("*");
+		$this->db->from("course");
+		$query  =  $this->db->get();
+			
+		foreach( $query->result_array() as $row )
+		$resultdata[] = $row;
+
+		$finaldata['resultdata']  = $resultdata;
+		$this->load->view("cour_addsubject",$finaldata);
+	}
+
+
+	// 删除一个科目  操作 bk_courses
+	public function deletecourse($courid){
+		$this->db->where('courseid',$courid);
+		if ( $this->db->delete('bk_course') )
+		{
+			echo 1;   // delete success
+		}
+		else
+		{
+			echo 0;
+		}
+	}
+	// 删除一条年级对应课程 操作  bk_class
+	public function delcourse( $rid ){
+		$this->db->where('rid',$rid);
+		if ( $this->db->delete('bk_courseofclass') )
+			echo 1;   // delete success
+		else
+			echo 0;
+	}
+
+	// 删除一条教学内容  操作对象 bk_classes
+	public function delclass( $classid ){
+			
+		$this->db->where('classid',$classid);
+		if ( $this->db->delete('bk_classes') )
+		echo 1;   // delete success
+		else
+		echo 0;
+	}
+
+	// 显示当前已有课程名称
+	public function showsubject(){
+			
+		$this->db->select("*");
+		$this->db->from("course");
+		$query = $this->db->get();
+			
+		foreach( $query->result_array() as $row ){
+			$resultdata[] = $row;
+		}
+		$finaldata['resultdata']  = $resultdata;
+		$this->load->view("cour_addsubject",$finaldata);
+	}
+	// 课程辅导
+	public function coursetutor(){
+		$this->db->select("*");
+		$this->db->from("classes");
+		$query = $this->db->get();
+			
+		foreach( $query->result_array() as $row )
+		$resultdata[] = $row;
+		$finaldata['resultdata'] = $resultdata;
+		$finaldata['classcate'] = $this->_get_classcategory();
+			
+		$this->load->view('cour_coursetutor', $finaldata );
+	}
+
+	// 编辑课程
+	public function editclass(){
+		/*
+		$this->db->select("catid,catname");
+		$this->db->from("categorys");
+		//$this->db->where_in("parentid",array('1','2','3'));
+		$query = $this->db->get();
+		foreach( $query->result_array() as $row )
+		$classcate[]  =$row;
+		
+		$finaldata['classcate'] = $classcate;
+		
+		
+		
+		$this->db->select("courseid,coursename");
+		$this->db->from("course");
+		$query = $this->db->get();
+		foreach( $query->result_array() as $row )
+		$coursecate[]  =$row;
+		
+		*/  
+		$finaldata['classcate'] = $this->_get_classcategory();
+		$finaldata['coursecate'] = $this->_get_coursecategory();
+		 
+		$this->load->view('cour_addcoursetutor',$finaldata);
+	}
+	
+	//获取年级分类
+	protected function _get_classcategory(){
+		$query = $this->db->get('categorys');
+		foreach ($query->result_array() as $row){
+			$list[$row[catid]] = $row;
+		}
+		return $list;
+	}
+	
+	//获取科目分类
+	protected function _get_coursecategory(){
+		$query = $this->db->get('course');
+		foreach ($query->result_array() as $row){
+			$list[$row[courseid]] = $row;
+		}
+		return $list;
+	}
+
+	// 增加一门辅导课程
+	public function addclass(){
+			
+		$data = $this->input->post('data');
+		
+		/*
+		$this->db->select("courseid,coursename");
+		$this->db->from("course");
+		$query = $this->db->get();		
+		foreach( $query->result_array() as $row )
+		{
+			if ( $data[classname] == $row[courseid] )
+			{
+				$data['classname'] = $row['coursename'];
+			}
+		}
+		*/
+		if(!$data['classname']){
+			showmessage('请选择科目');
+		}
+		if(!$data['catid']){
+			showmessage('请选择所属年级');
+		}
+		
+		$coursecategory = $this->_get_coursecategory();
+		//$data['courseid'] = $data['classname'];
+		$data['classname'] = $coursecategory[$data['classname']]['coursename'];
+		
+		
+		
+		$this->db->insert('classes', $data);
+			
+		showmessage('添加成功','', site_url(array('c' => 'course', 'm' => 'coursetutor')));
+	}
+
+
+	// 显示课程具体内容
+	public function showdata( $classid ){
+			
+			
+		$this->db->select("*");
+		$this->db->from("bk_classes");
+		$this->db->where("classid",$classid);
+		$query = $this->db->get();
+		$resultdata = current($query->result_array());
+		$finaldata['resultdata']  = $resultdata;
+
+
+		$finaldata['classcate'] = $this->_get_classcategory();
+		 
+		$finaldata['coursecate'] = $this->_get_coursecategory();
+			
+		$this->load->view('cour_updatecoursetutor', $finaldata );
+	}
+
+
+	//修改课程内容
+	public function  updateclass(){
+		$data = $this->input->post("data");
+		
+		if(!$data['classname']){
+			showmessage('请选择科目');
+		}
+		if(!$data['catid']){
+			showmessage('请选择所属年级');
+		}
+		
+		$coursecategory = $this->_get_coursecategory();
+		//$data['courseid'] = $data['classname'];
+		$data['classname'] = $coursecategory[$data['classname']]['coursename'];
+		
+		
+		
+		$data['classid'] = $this->input->post('classid');
+		$this->db->where('classid',$data['classid']);
+		$this->db->update('classes',$data);
+		header('Location: /admin/index.php/course/coursetutor/');
+	}
+}
+
+/* End of file news.php */
+/* Location: ./application/controllers/news.php */
+?>

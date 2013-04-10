@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS Document */
+
+a{ text-decoration:none;}
+a:hover{ text-decoration:underline;}
+
+/*全局通用样式*/
+.aclear_o{ overflow:hidden; _height:1px; _overflow:visible;}
+.aclear_c{ clear:both;}
+.tc{ text-align:center;}
+.tl{ text-align:left;}
+.tr{ text-align:right;}
+
+/*搜索样式*/
+.asearch{ background:#f4f4f4; padding:5px; line-height:25px; margin-bottom:15px; font-size:14px;}
+.asearch .input_text{ border:1px solid #999; font-size:12px; height:20px; line-height:20px; padding:0 4px; margin:0 13px 0 3px;}
+.asearch .input_50{ width:50px;}
+.asearch .input_150{ width:150px;}
+
+/*表格相关规范*/
+.atable{ border-collapse:collapse; background:#FFF; margin:0 0 15px 0; width:inherit;}
+.atable a{ text-decoration:none; color:#06c;}
+.atable a:hover{ text-decoration:underline;}
+.atable tr:hover{ background:#eff2ff;}
+.atable th{ text-align:center; font-weight:bold; background:#f4f4f4;}
+.atable td,.atable th{ border:1px solid #999; padding:3px 5px; font-size:12px; color:#333; line-height:16px;}
+
+/*按钮通用规范*/
+.btn{ display:inline-block; padding:3px 10px; cursor:pointer; color:#FFF; border-radius:4px; margin-right:10px; font-size:14px; text-decoration:none;}
+.btn:hover{ text-decoration:underline;}
+a.btn_blue,.btn_blue{ border:1px solid #3079ED; box-shadow:1px 1px 2px #ccc; background:#609cff; background:-moz-linear-gradient(top, #609cff, #4787ED); background:-webkit-gradient(linear,left top,left bottom,color-stop(1%,#609cff),to(#4787ED));}
+a.btn_gray,.btn_gray{ display:inline-block; padding:3px 10px; cursor:pointer; color:#333; border-radius:4px;  border:1px solid #ccc; box-shadow:1px 1px 2px #ccc; background:#e7e7e7; background:-moz-linear-gradient(top, #f2f2f2, #e3e3e3); background:-webkit-gradient(linear,left top,left bottom,color-stop(1%,#f2f2f2),to(#e3e3e3)); margin-right:10px;}
+a.btn_org,.btn_org{ display:inline-block; padding:3px 10px; cursor:pointer; color:#fff; border-radius:4px;  border:1px solid #ccc; box-shadow:1px 1px 2px #ccc; background:#e7e7e7; background:-moz-linear-gradient(top, #fb9a44, #f8712f); background:-webkit-gradient(linear,left top,left bottom,color-stop(1%,#fb9a44),to(#f8712f)); margin-right:10px;}
+
+
+/*表单通用规范*/
+.afield{ overflow:hidden; _height:1px; _overflow:visible; margin-bottom:10px;}
+.afield label{ float:left; width:130px; padding-right:5px; font-size:14px; line-height:30px; text-align:right;}
+.afield .main{ float:left; width:300px; padding:0 10px;}
+.afield .main .hint{ font-size:12px; color:#999; line-height:16px; width:100%; margin-top:5px;}
+.afield .main .hint_focus{ color:#333;}
+.afield .main .hint_err{ color:#f00;}
+.afield.act{ padding-left:145px;}
+.afield .tip{ float:left; line-height:20px; font-size:14px; padding:4px; 2border:1px solid #F00; color:#c00;}
+
+.afield .main .input_text{ padding:0 5px; width:288px; height:28px; line-height:28px; border:1px solid #999; font-size:14px;}
+.afield .main .input_textarea{ padding:0 5px; width:288px; height:50px; line-height:20px; border:1px solid #999; font-size:14px;}
+.afield .input_btn_blue{ display:inline-block; padding:3px 10px; cursor:pointer; color:#FFF; border-radius:4px;  border:1px solid #3079ED; box-shadow:1px 1px 2px #ccc; background:#609cff; background:-moz-linear-gradient(top, #609cff, #4787ED); background:-webkit-gradient(linear,left top,left bottom,color-stop(1%,#609cff),to(#4787ED)); margin-right:10px;}
+.afield .input_btn_gray{ display:inline-block; padding:3px 10px; cursor:pointer; color:#333; border-radius:4px;  border:1px solid #ccc; box-shadow:1px 1px 2px #ccc; background:#e7e7e7; background:-moz-linear-gradient(top, #f2f2f2, #e3e3e3); margin-right:10px;}
+
+
+/*afield_1即只有两栏的表单样式,只会将输入框下面的常规提示直接替换为错误提示*/
+.afield_1{}
+
+
+/*选择城市样式*/
+.acity{ font-size:12px; height:25px; line-height:25px; border-bottom:1px solid #ccc;}
+.acity:after{ content:""; display:block; height:0; visibility:hidden; clear:both;}
+.acity li{ float:left; list-style:none; margin-right:15px;}
+.acity li a{ color:#0198cf; margin-right:10px;}
+.acity li.m{ position:relative; color:#0198cf;}
+.acity li.m span.t{ cursor:pointer;}
+.acity li.m .mcity{ position:absolute; left:0; top:25px; border:1px solid #0198cf; padding:10px 3px; width:280px; background:#fff; box-shadow:0 0 4px #e7e7e7;}
+.acity li.m .mcity ul.letter_list{ border-bottom:1px solid #0198cf; height:23px; padding:0 3px; margin-bottom:7px;}
+.acity li.m .mcity ul.letter_list li{ float:left; height:22px; line-height:22px; background:#FFF; border:1px solid #0198cf; border-bottom:none; margin-right:4px; padding:0 5px; font-family:Arial, Helvetica, sans-serif; color:#333; cursor:pointer;}
+.acity li.m .mcity ul.letter_list li.current{ position:relative; bottom:-1px; height:22px;}
+.acity li.m .mcity .tab_content{}
+.acity li.m .mcity .tab_content .tab_pannel{ line-height:20px;}
+.acity li.m .mcity .tab_content .tab_pannel dl{ margin-bottom:5px; overflow:hidden; _height:1px; _overflow:visible;}
+.acity li.m .mcity .tab_content .tab_pannel dl dt{ float:left; padding-left:4px; color:#ff9900;}
+.acity li.m .mcity .tab_content .tab_pannel dl dd{ margin-left:20px;}
+.acity li.m .mcity .tab_content .tab_pannel dl dd span{ width:65px; float:left;}
+
+
+
+
+
+
+
+

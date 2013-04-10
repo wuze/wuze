@@ -1,0 +1,395 @@
+<?php
+/**
+ * 管理生成权限列表文件权限
+ * 关联文件：core/controller.php  /core/rbac.php
+ *
+ * Version: 1.0.0
+ * Web: http://www.bkw.cn/
+ * Copyright: 2011-2012 (flourish@msn.cn)
+ * Last Modified: 20011-11-9 20:56
+ *
+ */
+
+/**
+ * 控制器描述数组
+DESCARRAY
+$simple['desc'] = '权限控制管理';
+$simple['actions']  = array(
+'createaccesslist'=>array('name'=>'抓取整个目录权限列表'),
+'addroleaccess'=>array('name'=>'角色编辑权限控制'),
+'relationpath'=>array('name'=>'将功能跟菜单关联权限'),
+'updatecache'=>array('name'=>'更新菜单缓存'),
+);
+DESCARRAY
+*/
+
+
+!defined('ROOTPATH') && define('ROOTPATH', APPPATH);
+!defined('CURPATH') && define('CURPATH', APPPATH.'controllers'.DIRECTORY_SEPARATOR);
+!defined('ACCESS_FILE_PATH') && define('ACCESS_FILE_PATH', ROOTPATH.'sitedata'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'admincp'.DIRECTORY_SEPARATOR);
+
+class Rightmanage extends CI_Controller
+{
+    private $access_list_file = 'access_list.php';		// 权限列表文件名
+    private $access_file = 'access.php';				// 权限验证文件名
+
+	private $_access_list_filepath;							//权限列表文件完整路径
+
+	public function Rightmanage()
+	{
+		parent::__construct();
+		$this->setAccessListPath();//设置权限列表文件名完整路径
+		$this->setAccessPath();//设置权限验证文件名完整路径
+		$this->load->model('rightmanage_model', 'right');
+
+		$this->easyui = 'easyui';
+	}
+	
+	/**
+	 * 更新菜单缓存
+	 *
+	 */
+	public function updatecache()
+	{
+			$this->right->menu_right();
+			showmessage('缓存已更新!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')));
+	}
+
+	public function addroleaccess()
+	{
+		
+		//判断权限列表文件是否存在
+		if(!file_exists($this->_access_list_filepath))
+			show_error('权限列表文件还没生成，请与管理员联系！');
+
+		$role_id = $this->uri->segment(3,$this->input->get('role_id'));
+		if(empty($role_id))
+		{
+			showmessage('参数错误!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'rolemanage', $this->config->config['function_trigger'] => 'ilist')));
+		}
+
+		$where = "role_id ='{$role_id}'";
+
+		$data = $this->input->post('data');
+		if(!empty($data) && is_array($data))
+		{//提交表单操作
+			
+
+			$act = 'allow';
+			
+			//初始化数据库
+			$this->load->database();
+			
+			$result = $this->right->del($where);
+
+			foreach($data as $k => $v)
+			{
+				$insert_array = array();
+				foreach($v as $kk => $kv)
+				{
+					if(!empty($kv)){
+						
+						
+						
+						$insert_array = array(
+											'role_id' => $role_id,
+											'controller_name' => $k,
+											'action_name' => $kv,
+											'act' => $act,
+											);
+						$result = $this->right->add($insert_array);
+						if(empty($result))
+						{
+							showmessage('权限添加失败!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')));
+						}
+					}
+				}
+			}
+			
+
+			//写权限验证文件
+			$new_access = $this->right->result();
+			$permissionArr = $this->right->parseToAccess($new_access);
+			//将权限数组转化为字符串
+		$writeString = var_export($permissionArr,true);
+$writeString = "<?php  
+/**
+ * 后台控制器的描述数组集合
+ *
+ */
+ 
+\$access = {$writeString};
+return \$access;
+?>
+";
+		
+		
+		//如果不存在改目录路径，则自动创建多级目录路径，如果存在则跳过。
+		$this->_mkdirs(dirname($this->_access_filepath));
+
+		//将权限数组写入文件
+		$this->right_write($this->_access_filepath, $writeString);
+
+		$this->right->menu_right();
+			showmessage('添加成功!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')));
+		}
+
+		$data['title'] = '权限控制管理--角色编辑权限控制';
+
+
+		$data['have_right'] = $this->right->result($where);
+		
+		$data['access_list'] = @include $this->_access_list_filepath;
+
+		$this->load->view('rightmanage_showaccesslist', $data);
+	}
+
+	public function showAccessList()
+	{
+		
+	}
+
+	protected function setAccessListPath()
+	{
+		$this->_access_list_filepath = ACCESS_FILE_PATH . $this->access_list_file;
+	}
+
+	protected function setAccessPath()
+	{
+		$this->_access_filepath = ACCESS_FILE_PATH . $this->access_file;
+	}
+
+
+	/**
+	 *
+	 * 获取控制器功能列表
+	 * @param string $path 控制器路径
+	 * @param string $files 控制器路径信息数组
+	 * @param string  $subpath 子目录路径
+	 *
+	 * @return Array 控制器描述数组集合
+	 *
+	 */
+	public function createaccesslist()
+	{
+		//获取当前后台控制器目录下所有控制器文件。
+		$files = $this->file_list(CURPATH, "/\.php$/i");
+		
+		//获取action所有控制权限
+		$permissionArr = $this->getActions($files);
+		//将权限数组转化为字符串
+		$writeString = var_export($permissionArr,true);
+$writeString = "<?php  
+/**
+ * 后台控制器的描述数组集合
+ *
+ */
+ 
+\$access = {$writeString};
+return \$access;
+?>
+";
+		
+		
+		//如果不存在改目录路径，则自动创建多级目录路径，如果存在则跳过。
+		$this->_mkdirs(dirname($this->_access_list_filepath));
+
+		//将权限数组写入文件
+		$this->right_write($this->_access_list_filepath, $writeString);
+
+		showmessage('成功抓取所有controller、action!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')));
+	}
+
+
+	
+	public function relationpath()
+	{
+		//echo $this->right->menu_right();exit();
+		//判断权限列表文件是否存在
+		if(!file_exists($this->_access_list_filepath))
+			show_error('权限列表文件还没生成，请与管理员联系！');
+
+		$data['title'] = '菜单文件关联';
+		$id = $this->uri->segment(3,$this->input->get('id'));
+		if(empty($id))
+		{
+			showmessage('参数错误，无法关联!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')));
+		}
+		$this->load->model('menumanage_model', 'menu');
+
+		$where = "id ={$id}";
+
+		$post_data = $this->input->post('data');
+		if(!empty($post_data))
+		{
+			$arr = explode('/', $post_data['controller_action']);
+			$post_data = array(
+				'controller_name'=> empty($arr[0])?'':$arr[0],
+				'action_name' => empty($arr[1])?'':$arr[1],
+				);
+
+			$result = $this->menu->update($post_data, $where);
+			if(!empty($result))
+			{
+				$this->right->menu_right();
+				showmessage('配置成功!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+			}else{
+				showmessage('参数错误，无法关联!', '信息提示', site_url(array($this->config->config['controller_trigger'] => 'menumanage', $this->config->config['function_trigger'] => 'ilist')), empty($this->easyui)?'':"<script LANGUAGE='JavaScript'>function go(){parent.dialog_close();}setTimeout(go,2000);</script>");
+			}
+		}
+
+
+		$res = $this->menu->result($where);
+		$data['arg'] = $res[0];
+		$data['arg']['controller_action'] = empty($data['arg']['controller_name'])?'':$data['arg']['controller_name'].'/'.$data['arg']['action_name'];
+		$data['access_list'] = @include $this->_access_list_filepath;
+
+		$this->load->view('rightmanage_relationpath', $data);
+	}
+	
+
+	/**
+	 *
+	 * 获取控制器功能列表
+	 * @param string $file 控制器路径
+	 *
+	 * @return Array 控制器描述数组集合
+	 *
+	 */
+	protected function getActions($files)
+	{
+		//print_r($files);exit();
+		$return = array();
+		$msg = '';
+		//遍历所有文件
+		foreach($files as $key => $file){
+			
+			if ( is_array($file) ) {
+		        // 递归获取子目录中信息
+		        if ( $res = $this->getActions($file) ) {
+		            $return = array_merge($return, $res);
+		        }
+		        continue;
+		    }
+			//获取文件内容
+			$con=@file_get_contents($file);
+			//获取功能描述数组
+			$preg_arr = array('DESC','ARRAY');
+			$preg_str = implode('',$preg_arr);
+			preg_match('|'.$preg_str.'(.*)'.$preg_str.'|s',$con,$desc);
+			if(empty($desc[1])){
+				$msg.='not found desc array</td><tr>';
+				continue;
+			}
+			$desc[1] = trim($desc[1]);
+			if(@eval($desc[1])===false){
+				$msg.='<b>error desc array</b></td><tr>';
+				continue;
+			}
+
+			if(empty($simple)){
+				$msg.='$simple is empty</td><tr>';
+				continue;
+			}
+
+			$msg.="OK</td><tr>";
+			
+			//键值需将文件的路径分隔符换成下划线，并去掉'.php'
+			$key=substr($key,0,-4);
+			$return[$key]=$simple;
+		}
+
+		return empty($return)?false:$return;
+	}
+
+	
+	/*
+	*   递归获取指定路径下的所有文件或匹配指定正则的文件（不包括“.”和“..”），结果以数组形式返回
+	*   @param  string  $dir
+	*   @param  string  [$pattern]
+	*   @return array
+	*/
+	protected function file_list($dir,$pattern='', $subpath = '')
+	{
+		$arr=array();
+		$dir_handle=opendir($dir);
+		if($dir_handle)
+		{
+			// 这里必须严格比较，因为返回的文件名可能是“0”
+			while(($file=readdir($dir_handle))!==false)
+			{
+				if($file==='.' || $file==='..')
+				{
+					continue;
+				}
+				$tmp=realpath($dir.'/'.$file);
+				if(is_dir($tmp))
+				{
+					$retArr=$this->file_list($tmp,$pattern, $file);
+					if(!empty($retArr))
+					{
+						
+						$arr[$file]=$retArr;
+					}
+				}else{
+					if($pattern==="" || preg_match($pattern,$tmp))
+					{
+						$file = empty($subpath)?$file:$subpath.'/'.$file;
+						$arr[$file]=$tmp;
+					}
+				}
+			}
+			closedir($dir_handle);
+		}
+		return $arr;
+	}
+
+	/**
+	 * 写权限数组到文件，如果文件有改动则先备份
+	 *
+	 * @param string $right_file 文件名
+	 * @param string $content 文件内容
+	 *
+	 * @return null
+	 *
+	 */
+	protected function right_write($right_file, $content)
+	{
+		$tmp_access = '';
+		if($file_is_exists = file_exists($right_file))
+		{
+			$tmp_access = @include $right_file;
+		}
+		if($content != $tmp_access){
+			
+			//如果原先权限文件已经存在，则拷贝，不存在跳过。
+			if(!empty($file_is_exists))
+				@copy($right_file, $right_file.'_'.date('YmdHis').'_'.rand(0,60).'.bak');
+
+			$fp = @fopen($right_file,"w+");        
+			if (@flock($fp, LOCK_EX)) { // 进行排它型锁定
+				@fwrite($fp, $content);
+				@flock($fp, LOCK_UN);   // 释放锁定
+			}
+			fclose($fp);
+		}
+	}
+
+	/**
+	 * 建立多级目录
+	 *
+	 * @param string $dir 目录路径
+	 * @param string $mode 目录权限
+	 *
+	 * @return null
+	 *
+	 */
+	protected function _mkdirs($dir,$mode = '0777'){
+		if(!is_dir($dir)){
+			$this->_mkdirs(dirname($dir), $mode);
+			mkdir($dir,$mode);
+		}
+		return ;
+	}
+}
+?>

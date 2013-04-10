@@ -1,0 +1,709 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 控制器描述数组
+DESCARRAY
+$simple['desc'] = '成功案例';
+$simple['actions']  = array(
+'index'=>array('name'=>'案例列表', 'writelog' => 'file'),
+'search_case'=>array('name'=>'搜索案例', 'writelog' => 'file'),
+'delete_case'=>array('name'=>'删除案例'),
+'into_case'=>array('name'=>'进入添加案例页'),
+'add_case'=>array('name'=>'添加保存案例'),
+'editor_case'=>array('name'=>'进入编辑案例页'),
+'editor_case_add'=>array('name'=>'保存编辑案例'),
+'view_case'=>array('name'=>'查看案例详细', 'writelog' => 'file'),
+'student_speech'=>array('name'=>'学院感言列表', 'writelog' => 'file'),
+'letter_from_parents'=>array('name'=>'家长来信列表', 'writelog' => 'file'),
+'add_news'=>array('name'=>'进入添加信息页'),
+'save_add_news'=>array('name'=>'保存添加信息'),
+'delete_news'=>array('name'=>'删除信息'),
+'editor_news'=>array('name'=>'进入编辑信息'),
+'save_editor_news'=>array('name'=>'保存编辑信息'),
+'view_news_case'=>array('name'=>'查看信息', 'writelog' => 'file'),
+'search_information'=>array('name'=>'搜索信息'),
+'case_do_upload' => array('name' => '案例上传头像'),
+);
+DESCARRAY
+*/
+/*
+ * Created on 2011-11-11
+ *
+ *	guo
+ *
+ * To change the template for this generated file go to
+ *
+ */
+
+class Successful_cases extends MY_Controller {
+
+	function __construct()
+    {
+        parent::__construct();
+        $this->load->database();//链接数据库
+
+    }
+
+    public function index(){
+
+		$pagesize = 10;
+		//当前偏移量
+		$start = $this->uri->segment(2, intval($this->input->get('pn')));
+
+		$this->db->from("cases");
+
+		$total = $this->db->count_all_results();
+
+		$this->db->order_by('addtime desc');
+
+    	$query = $this->db->get('cases',$pagesize, $start);
+
+		foreach($query->result_array() as $row){
+
+			$data['cases'][] = $row;
+
+		}
+
+		//载入分页类
+		$this->load->library('mypage');
+		//显示分页
+		$page = $this->mypage->show($total, $pagesize, site_url(array('c' => 'successful_cases', 'm' => 'index'),'',2));
+
+		$data['page'] = $page;
+
+		 //年级
+
+		$query = $this->db->get('categorys');
+
+		foreach($query->result_array() as $row){
+
+			$data['categorys'][] = $row;
+
+		}
+
+		//科目
+		$query = $this->db->get('course');
+
+		foreach($query->result_array() as $row){
+
+			$data['course'][] = $row;
+
+		}
+
+		$this->load->view('admin_successful_cases',$data);
+
+    }
+	//搜索案例
+    public function search_case(){
+
+    	 //年级
+
+		$query = $this->db->get('categorys');
+
+		foreach($query->result_array() as $row){
+
+			$data['categorys'][] = $row;
+
+		}
+
+		//科目
+		$query = $this->db->get('course');
+
+		foreach($query->result_array() as $row){
+
+			$data['course'][] = $row;
+
+		}
+
+		$schoolid = $this->input->post("schoolid"); //年级ID
+
+		 if($schoolid){
+
+			$this->db->where('schoolid',$schoolid);
+			$this->db->or_where('membership',$schoolid);
+
+			$data['schoolid'] = $schoolid;
+
+		}
+
+		$studysubject = $this->input->post("studysubject"); //科目ID
+
+		if($studysubject){
+
+			$this->db->where('studysubject',$studysubject);
+
+			$data['studysubject'] = $studysubject;
+
+		}
+
+		$username = $this->input->post("username"); //学生名字
+
+		if($username){
+
+			$this->db->like('name',$username);
+
+			$data['name'] = $username;
+
+		}
+
+		$query = $this->db->get('cases');
+
+		foreach($query->result_array() as $row){
+
+			$data['cases'][] = $row;
+
+		}
+
+		$this->load->view('admin_successful_cases',$data);
+
+    }
+
+	//删除案例
+
+	public function delete_case($caseid){
+
+		$this->db->where('caseid',$caseid);
+
+		$this->db->delete('cases');
+
+	}
+
+	//进入添加案例
+
+	public function into_case(){
+
+		 //年级
+		$this->db->where('parentid >', 0);
+		$query = $this->db->get('categorys');
+
+		foreach($query->result_array() as $row){
+
+			$data['categorys'][] = $row;
+
+		}
+
+		//科目
+		$query = $this->db->get('course');
+
+		foreach($query->result_array() as $row){
+
+			$data['course'][] = $row;
+
+		}
+
+		$this->load->view('case_add',$data);
+
+	}
+	//添加案例
+	public function add_case(){
+
+		$schoolid = $this->input->post("schoolid"); //所属年级
+
+		$name = $this->input->post("name"); //学生姓名
+
+		$studysubject = $this->input->post("studysubject");//所属科目
+
+		$catid_val = implode(',',$studysubject);
+
+		$studytimes = $this->input->post("studytimes"); //辅导时间
+
+		$studyanalysis = $this->input->post("studyanalysis"); //个性化分析
+
+		$studyplan = $this->input->post("studyplan"); //辅导方案
+
+		$studyresult = $this->input->post("studyresult"); //辅导效果
+
+		$img_path = $this->input->post("img_path"); //上传头像
+
+		$recommend = $this->input->post("recommend"); //是否推荐到首页
+
+		$this->db->select('parentid');
+
+
+		$this->db->where('catid',$schoolid);
+
+		$query = $this->db->get('categorys');
+
+		foreach($query->result() as $row){
+
+			$membership[] = $row;
+
+		}
+
+		$data = array(
+
+			'schoolid'=>$schoolid,
+			'name'=>$name,
+			'studysubject'=>$catid_val,
+			'studytimes'=>$studytimes,
+			'studyanalysis'=>$studyanalysis,
+			'studyplan'=>$studyplan,
+			'studyresult'=>$studyresult,
+			'pic'=>$img_path,
+			'addtime'=>time(),
+			'clicks'=>0,
+			'adminid'=>$this->session->userdata('adminid'),
+			'recommendid'=>$recommend,
+			'membership'=>$membership[0]->parentid
+
+		);
+
+		$this->db->insert('cases',$data);
+
+		//header('Location: /admin/index.php/successful_cases');
+		showmessage('添加案例成功', '', site_url(array('c' => 'successful_cases')));
+	}
+
+	//进入编辑案例
+
+	public function editor_case($caseid){
+
+
+		 //年级
+		$this->db->where('parentid >', 0);
+		$query = $this->db->get('categorys');
+
+		foreach($query->result_array() as $row){
+
+			$data['categorys'][] = $row;
+
+		}
+
+		//科目
+		$this->load->helper('cache');
+
+		$cagegory = cache_include('coursecategory.php');
+
+		$data['subjects'] = $cagegory;
+
+		$this->db->where('caseid',$caseid);
+
+		$query = $this->db->get('cases');
+
+		foreach($query->result() as $row){
+
+			$data['case'] = $row;
+
+		}
+
+		$this->load->view('editor_case',$data);
+
+	}
+	//编辑保存案例
+	public function editor_case_add(){
+
+		$caseid = $this->input->post("caseid"); //ID
+
+		$schoolid = $this->input->post("schoolid"); //所属年级
+
+		$name = $this->input->post("name"); //学生姓名
+
+		$studysubject = $this->input->post("studysubject");//所属科目
+
+		$catid_val = @implode(',',$studysubject);
+
+		$studytimes = $this->input->post("studytimes"); //辅导时间
+
+		$studyanalysis = $this->input->post("studyanalysis"); //个性化分析
+
+		$studyplan = $this->input->post("studyplan"); //辅导方案
+
+		$studyresult = $this->input->post("studyresult"); //辅导效果
+
+		$img_path = $this->input->post("img_path"); //上传头像
+
+		$recommend = $this->input->post("recommend"); //是否推荐到首页
+
+		$this->db->select('parentid');
+
+		$this->db->where('catid',$schoolid);
+
+		$query = $this->db->get('categorys');
+
+		foreach($query->result() as $row){
+
+			$membership[] = $row;
+
+		}
+
+		$data = array(
+
+			'schoolid'=>$schoolid,
+			'name'=>$name,
+			'studysubject'=>$catid_val,
+			'studytimes'=>$studytimes,
+			'studyanalysis'=>$studyanalysis,
+			'studyplan'=>$studyplan,
+			'studyresult'=>$studyresult,
+			'pic'=>$img_path,
+			'addtime'=>time(),
+			'adminid'=>$this->session->userdata('adminid'),
+			'recommendid'=>$recommend,
+			'membership'=>$membership[0]->parentid
+
+		);
+
+		$this->db->where('caseid',$caseid);
+
+		$this->db->update('cases', $data);
+
+		//header('Location: /admin/index.php/successful_cases');
+		showmessage('编辑案例成功', '', site_url(array('c' => 'successful_cases')));
+	}
+
+	//查看成功案例详细
+
+	public function view_case($caseid){
+
+		 //年级
+
+		$query = $this->db->get('categorys');
+
+		foreach($query->result_array() as $row){
+
+			$data['categorys'][] = $row;
+
+		}
+
+		//科目
+		$query = $this->db->get('course');
+
+		foreach($query->result_array() as $row){
+
+			$data['course'][] = $row;
+
+		}
+
+		$this->db->where('caseid',$caseid);
+
+		$query = $this->db->get('cases');
+
+		foreach($query->result() as $row){
+
+			$data['case'] = $row;
+
+		}
+
+		$this->load->view('view_case',$data);
+
+	}
+	//上传头像
+	public function case_do_upload(){
+
+		$config['upload_path'] = UPLOAD_IMAGE_PATH_SET.'case/';
+
+		$config['file_name'] = date('YmdHis').rand(1000,9999);
+
+		$config['allowed_types'] = 'gif|jpg|png';
+
+		$config['max_size'] = FILE_UPLOAD_MAX;
+
+		$this->load->library('upload', $config);
+
+		$this->upload->do_upload();
+
+		$error = array('error' => $this->upload->display_errors());
+
+		$data['callback'] = "UPLOAD_CALLBACK";
+
+		$imgdata = $this->upload->data();
+
+		$data['filename'] = '/uploads/case/'.$imgdata['file_name'];
+
+		$this->load->view('upload_cross',$data);
+
+	}
+
+	//学员感言列表
+
+	public function student_speech(){
+
+		$data['type'] = array(
+
+			'1'=>'学员感言',
+			'2'=>'家长留言'
+
+		);
+
+		$pagesize = 10;
+		//当前偏移量
+		$start = $this->uri->segment(2, intval($this->input->get('pn')));
+
+		$this->db->where('type',1);
+
+		$this->db->from("casenews");
+
+		$total = $this->db->count_all_results();
+
+		//载入分页类
+		$this->load->library('mypage');
+		//显示分页
+		$page = $this->mypage->show($total, $pagesize, site_url(array('c' => 'successful_cases', 'm' => 'student_speech'),'',2));
+
+		$data['page'] = $page;
+
+
+		$this->db->where('type',1);
+
+		$this->db->order_by('addtime desc');
+
+		$query = $this->db->get('casenews',$pagesize, $start);
+
+		foreach($query->result_array() as $row){
+
+			$data['student_speech'][] = $row;
+
+		}
+
+		$this->load->view('student_speech',$data);
+
+	}
+
+	//家长来信
+
+	public function letter_from_parents(){
+
+		$pagesize = 10;
+		//当前偏移量
+		$start = $this->uri->segment(2, intval($this->input->get('pn')));
+
+		$this->db->where('type',2);
+
+		$this->db->from("casenews");
+
+		$total = $this->db->count_all_results();
+
+		//载入分页类
+		$this->load->library('mypage');
+		//显示分页
+		$page = $this->mypage->show($total, $pagesize, site_url(array('c' => 'successful_cases', 'm' => 'letter_from_parents'),'',2));
+
+		$data['page'] = $page;
+
+		$data['type'] = array(
+
+			'1'=>'学员感言',
+			'2'=>'家长留言'
+
+		);
+
+		$this->db->where('type',2);
+
+		$this->db->order_by('addtime desc');
+
+		$query = $this->db->get('casenews',$pagesize, $start);
+
+		foreach($query->result_array() as $row){
+
+			$data['student_speech'][] = $row;
+
+		}
+
+		$this->load->view('student_speech',$data);
+
+	}
+	//进入添加信息页面
+	public function add_news(){
+
+		$this->load->view('add_news');
+
+	}
+	//保存添加信息
+	public function save_add_news(){
+
+		$title = $this->input->post("title"); //标题
+
+		$img_path = $this->input->post("img_path"); //头像
+
+		$author = $this->input->post("author"); //作者
+
+		$type = $this->input->post("type");//类型
+
+		$description = $this->input->post("description"); //描述
+
+		$content = $this->input->post("content"); //内容
+
+		$source = $this->input->post("source"); //来源
+
+		$data = array(
+
+			'title'=>$title,
+			'author'=>$author,
+			'pic'=>$img_path,
+			'type'=>$type,
+			'description'=>$description,
+			'content'=>$content,
+			'addtime'=>time(),
+			'source'=>$source
+		);
+
+		$this->db->insert('casenews',$data);
+
+		if($type == 1){
+
+			showmessage('添加信息成功', '', site_url(array('c' => 'successful_cases','m'=>'student_speech')));
+
+		}else{
+
+			showmessage('添加信息成功', '', site_url(array('c' => 'successful_cases','m'=>'letter_from_parents')));
+
+		}
+
+	}
+	//删除信息家长留言，学生感言
+	public function delete_news($casenewsid){
+
+		$this->db->where('casenewsid',$casenewsid);
+
+		$this->db->delete('casenews');
+
+	}
+	//编辑信息 editor
+	public function editor_news($casenewsid){
+
+		$this->db->where('casenewsid',$casenewsid);
+
+		$query = $this->db->get('casenews');
+
+		foreach($query->result() as $row){
+
+			$data['news'] = $row;
+
+		}
+
+		$this->load->view('editor_news_case',$data);
+	}
+
+	//编辑信息 editor
+	public function save_editor_news(){
+
+		$casenewsid = $this->input->post("casenewsid"); //ID
+
+		$title = $this->input->post("title"); //标题
+
+		$img_path = $this->input->post("img_path"); //头像
+
+		$author = $this->input->post("author"); //作者
+
+		$type = $this->input->post("type");//类型
+
+		$description = $this->input->post("description"); //描述
+
+		$content = $this->input->post("content"); //内容
+
+		 $source = $this->input->post("source"); //来源
+
+		$data = array(
+
+			'title'=>$title,
+			'author'=>$author,
+			'pic'=>$img_path,
+			'type'=>$type,
+			'description'=>$description,
+			'content'=>$content,
+			'addtime'=>time(),
+			'source'=>$source
+		);
+
+		$this->db->where('casenewsid',$casenewsid);
+
+		$this->db->update('casenews', $data);
+
+		if($type == 1){
+
+			showmessage('编辑信息成功', '', site_url(array('c' => 'successful_cases','m'=>'student_speech')));
+
+		}else{
+
+			showmessage('编辑信息成功', '', site_url(array('c' => 'successful_cases','m'=>'letter_from_parents')));
+
+		}
+
+
+
+	}
+	//查看信息
+	public function view_news_case($casenewsid){
+
+		$data['type'] = array(
+
+			'1'=>'学员感言',
+			'2'=>'家长留言'
+
+		);
+
+		$this->db->where('casenewsid',$casenewsid);
+
+		$query = $this->db->get('casenews');
+
+		foreach($query->result() as $row){
+
+			$data['news'] = $row;
+
+		}
+
+		$this->load->view('view_news_case',$data);
+
+	}
+
+	public function search_information(){
+
+		$data['type'] = array(
+			'1'=>'学员感言',
+			'2'=>'家长留言'
+		);
+
+		$casenewsid = $this->input->post("casenewsid"); //ID
+
+		if($casenewsid){
+
+			$this->db->where('casenewsid',$casenewsid);
+
+			$data['casenewsid'] = $casenewsid;
+
+		}
+
+		$title = $this->input->post("title"); //标题
+
+		if($title){
+
+			$this->db->like('title',$title);
+
+			$data['title'] = $title;
+
+		}
+
+		$types = $this->input->post("type"); //类型
+
+		if($types){
+
+			$this->db->where('type',$types);
+
+			$data['types'] = $types;
+
+		}
+
+		$author = $this->input->post("author"); //作者
+
+		if($author){
+
+			$this->db->where('author',$author);
+
+			$data['author'] = $author;
+
+		}
+
+		$query = $this->db->get('casenews');
+
+		foreach($query->result_array() as $row){
+
+			$data['student_speech'][] = $row;
+
+		}
+
+		$this->load->view('student_speech',$data);
+
+	}
+
+
+}
+?>

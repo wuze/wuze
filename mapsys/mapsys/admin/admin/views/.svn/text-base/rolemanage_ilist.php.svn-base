@@ -1,0 +1,32 @@
+<?php $this->load->view('header_m'); ?>
+
+
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<h1>管理中心</h1>
+</div>
+<div class="mainbox">
+<table>
+	<tr><td><?=$title?></td><td>  <?if(!empty($add_url)) {echo '('.$add_url.')';}?>  </td></tr>
+	<tr>
+		<?foreach($ilist_array as $k => $v){?>
+		<td><?=$v?></td><?}?>
+		<?foreach($ilist_array_ext as $k => $v){?>
+		<td><?=$v?></td><?}?>
+	</tr>
+	<?if(!empty($args)){foreach($args as $k => $v){?>
+	<tr>
+		<?foreach($v as $kk => $vv){?>
+		<td><?=$vv?></td><?}?>
+	</tr>
+	<?}}else{?>
+	<tr><td>暂无数据</td></tr>
+	<?}?>
+</table>
+</div>
+</div>
+
+
+<?php $this->load->view('footer'); ?>

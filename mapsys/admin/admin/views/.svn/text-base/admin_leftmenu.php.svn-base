@@ -1,0 +1,167 @@
+<?php $this->load->view("header_c"); ?>
+<body target="main">
+<div class="leftcolumn">
+
+       <?php if($this->data['to'] == "manager" ) {?>
+       <div class="titbar">系统管理</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onClick="DoMenu('ChildMenu1')">用户管理</a>
+            <ul id="ChildMenu1" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'rolemanage', 'm' => 'ilist' )); ?>" target="mainframe">用户组列表</a></li>
+              <li><a href="<?php echo site_url(array('c'=>'rolemanage', 'm' => 'add')); ?>" target="mainframe">新建用户组</a></li>
+              <li><a href="<?php echo site_url('/user/create')?>" target="mainframe">新建用户</a></li>
+              <li><a href="<?php echo site_url('/user')?>" target="mainframe">用户列表</a></li>
+            </ul>
+          </li>
+
+          <li class="firstbar"><a href="#Menu=ChildMenu2" class="b ablock" onClick="DoMenu('ChildMenu2')">菜单管理</a>
+            <ul id="ChildMenu2" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'menumanage', 'm' => 'ilist'))?>" target="mainframe">查看菜单列表</a></li>
+            </ul>
+          </li>
+
+           <li class="firstbar"><a href="#Menu=ChildMenu3" class="b ablock" onClick="DoMenu('ChildMenu3')">权限管理</a>
+            <ul id="ChildMenu3" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'rightmanage', 'm' => 'createaccesslist'))?>" target="mainframe">抓取整个目录权限列表</a></li>
+            </ul>
+          </li>
+
+          <li class="firstbar"><a href="#Menu=ChildMenu4" class="b ablock" onClick="DoMenu('ChildMenu4')">栏目管理</a>
+            <ul id="ChildMenu4" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'category', 'm' => 'index'))?>" target="mainframe">年级分类</a></li>
+              <li><a href="<?php echo site_url(array('c'=>'news', 'm' => 'newscate'))?>" target="mainframe">新闻分类</a></li>
+              <li><a href="<?php echo site_url(array('c'=>'course', 'm' => 'showsubject'))?>" target="mainframe">科目分类</a></li>
+            </ul>
+          </li>
+
+           <li class="firstbar"><a href="#Menu=ChildMenu6" class="b ablock" onClick="DoMenu('ChildMenu6')">信息收集管理</a>
+            <ul id="ChildMenu6" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'contact', 'm' => 'index'))?>" target="mainframe">Email订阅</a></li>
+              <li><a href="<?php echo site_url(array('c'=>'contact', 'm' => 'remind'))?>" target="mainframe">问题反馈管理</a></li>
+             
+            </ul>
+          </li>
+          
+           <li class="firstbar"><a href="#Menu=ChildMenu5" class="b ablock" onClick="DoMenu('ChildMenu5')">缓存管理</a>
+            <ul id="ChildMenu5" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'syscache', 'm' => 'index'))?>" target="mainframe">生成系统缓存</a></li>
+            </ul>
+          </li>
+          
+           <li class="firstbar"><a href="#Menu=ChildMenu7" class="b ablock" onClick="DoMenu('ChildMenu7')">操作日志管理</a>
+            <ul id="ChildMenu7" class="collapsed">
+              <li><a href="<?php echo site_url(array('c'=>'adminlogmanage', 'm' => 'ilist'))?>" target="mainframe">操作日志列表</a></li>
+            </ul>
+          </li>
+
+        </ul>
+	   </div>
+	   <?php } ?>
+
+	   <?php if($this->data['to'] == "about") {?>
+       <div class="titbar">关于我们</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onClick="DoMenu('ChildMenu1')">关于我们</a>
+            <ul id="ChildMenu1" class="collapsed">
+              <li><a href="<?php echo site_url('/about/')?>" target="mainframe">关于我们</a></li>
+
+            </ul>
+          </li>
+
+
+        </ul>
+	   </div>
+	   <?php } ?>
+
+	   <?php if($this->data['to'] == "zone") {?>
+       <div class="titbar">互动专区</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onclick="DoMenu('ChildMenu1')">问答管理</a>
+            <ul id="ChildMenu1" class="collapsed">
+              <li><a href="<?php echo site_url('/zone/')?>" target="mainframe">问题列表</a></li>
+			<li><a href="<?php echo site_url('/zone/into_question')?>" target="mainframe">添加问题</a></li>
+            </ul>
+          </li>
+        </ul>
+	   </div>
+	   <?php } ?>
+
+
+
+
+	   <?php if($this->data['to'] == "course") {?>
+       <div class="titbar">课程辅导</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onClick="DoMenu('ChildMenu1')">课程辅导</a>
+            <ul id="ChildMenu1" class="collapsed">
+            <li><a href="<?php echo site_url(array('c'=>'course', 'm' => 'showsubject'))?>" target="mainframe">科目分类</a></li>
+              <li><a href="<?php echo site_url('/course/')?>" target="mainframe">年级课程列表</a></li>
+
+              <li><a href="<?php echo site_url('/course/editclass/')?>" target="mainframe">增加辅导</a></li>
+              <li><a href="<?php echo site_url('/course/coursetutor/')?>" target="mainframe">课程辅导</a></li>
+            </ul>
+          </li>
+
+
+        </ul>
+	   </div>
+	   <?php } ?>
+
+	   <?php if($this->data['to'] == "teacher") {?>
+       <div class="titbar">金牌师资</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onClick="DoMenu('ChildMenu1')">老师管理</a>
+            <ul id="ChildMenu1" class="collapsed">
+              <li><a href="<?php echo site_url('/teacher/')?>" target="mainframe">老师列表</a></li>
+			<li><a href="<?php echo site_url('/teacher/teacher_add')?>" target="mainframe">添加老师</a></li>
+            </ul>
+          </li>
+        </ul>
+	   </div>
+	   <?php } ?>
+
+
+	    <?php if($this->data['to'] == "successful_cases") {?>
+       <div class="titbar">成功案例</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onClick="DoMenu('ChildMenu1')">案例管理</a>
+            <ul id="ChildMenu1" class="collapsed">
+
+              <li><a href="<?php echo site_url('/successful_cases/')?>" target="mainframe">案例列表</a></li>
+			<li><a href="<?php echo site_url('/successful_cases/into_case')?>" target="mainframe">添加案例</a></li>
+			<li><a href="<?php echo site_url('/successful_cases/student_speech')?>" target="mainframe">学员感言信息列表</a></li>
+			<li><a href="<?php echo site_url('/successful_cases/letter_from_parents')?>" target="mainframe">家长来信信息列表</a></li>
+			<li><a href="<?php echo site_url('/successful_cases/add_news')?>" target="mainframe">添加信息</a></li>
+            </ul>
+          </li>
+
+
+        </ul>
+	   </div>
+	   <?php } ?>
+
+	    <?php if($this->data['to'] == "news") {?>
+       <div class="titbar">新闻资讯</div>
+        <ul id="nav">
+          <li class="firstbar"><a href="#Menu=ChildMenu1" class="b ablock" onClick="DoMenu('ChildMenu1')">新闻管理</a>
+            <ul id="ChildMenu1" class="collapsed">
+              <li><a href="<?php echo site_url('/news/newscate/')?>" target="mainframe">新闻分类</a></li>
+             <li><a href="<?php echo site_url('/news/create/')?>" target="mainframe">添加新闻</a></li>
+            <li><a href="<?php echo site_url('/news/index/')?>" target="mainframe">新闻列表</a></li>
+            </ul>
+          </li>
+
+
+        </ul>
+	   </div>
+	   <?php } ?>
+
+	   <script type="text/javascript" src="js/leftnav.js"></script>
+	   <script type="text/javascript" src="js/jquery.1.4.js"></script>
+<script type="text/javascript">
+$(function(){
+    if($.browser.msie&&$.browser.version=="6.0"&&$("html")[0].scrollHeight>$("html").height())
+        $("html").css("overflowY","scroll");
+});
+</script>
+</body></html>

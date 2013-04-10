@@ -1,0 +1,167 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{
+	padding:0;
+	margin:0;
+}
+body{
+	font-size:12px;
+	font-weight:normal;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#333;
+}
+img {
+	border:none;
+}
+ul{
+	list-style:none;
+}
+a{ text-decoration:none;}
+a:link {
+	color:#0066cc;
+	text-decoration:none;
+}
+a:hover {
+	color:red;
+	text-decoration:underline;
+}
+
+.iclear {
+	clear:both;
+}
+table{
+	border-collapse:collapse;
+	width:100%;
+	margin:0px auto 10px auto;
+}
+td{
+	border:1px solid #D7D7D7;
+	padding:0px 6px 3px 6px;
+}
+td.op{
+	text-align:center;
+}
+th{
+	font-size:14px;
+	font-weight:bold;
+	border:1px solid #D7D7D7;
+	text-align:center;
+	line-height:24px;
+}
+/*排期箭头*/
+.o_arrow{padding:0px; height:30px;}
+.o_arrow a{display:block;background:url(img/o_arrow_bg.gif) no-repeat 80px 10px; height:30px; line-height:30px; color:#333;}
+.o_arrow .spe{background:url(img/o_arrow_bg.gif) no-repeat 125px 10px;}
+.o_arrow .desc{background:url(img/o_arrow_bg1.gif) no-repeat 80px 10px;}
+.o_arrow .asc{background:url(img/o_arrow_bg2.gif) no-repeat 80px 10px;}
+.o_arrow a:hover{ text-decoration:none;}
+
+
+h3{
+	font-size:14px;
+	font-weight:bold;
+	color:#333;
+	line-height:20px;
+	background:#E8F1F9;
+	padding:5px;
+	margin-bottom:15px;
+}
+h4{
+	font-size:12px;
+	font-weight:bold;
+	line-height:25px;
+	height:25px;
+	border-bottom:1px solid #ccc;
+	margin-bottom:15px;
+}
+.igray{
+	color:#999;
+}
+.ired{
+	color:#F00;
+}
+
+/*validator*/
+span.errorTip{ font-size:12px; color:#C00;line-height:30px; text-indent:15px; }
+div.errorTip { font-size:12px; color:#C00; display:none; }
+div.validTip, span.validTip{ font-size:12px; display:none; } 
+span.require { color:#C00; font-weight:bold; }
+.noerror .errorTip, .noerror .validTip { display: none; } 
+.errorInput{ background-color:#FFCC33; } 
+
+
+#field_new .input_pub{ margin-right:5px; vertical-align:middle;}
+.center_left{ text-align:left;}
+
+/*工作后台城市多选*/
+#main #dashboard ul li.sel{padding:0;}
+#dashboard ul li span.sel{display:inline-block; height:22px; padding:0 7px; color:#ffffff; float:left; margin-right:1px; border-radius:2px 0 0 2px; 
+box-shadow: 0 0 3px #F90; white-space: nowrap;}
+#dashboard ul li a.cl{float:left; background:#F90; width:23px; height:23px; text-align:center; color:#F90; border-radius:0 2px 2px 0; box-shadow: 0 0 3px #CCC;}
+
+.remark{
+    color:#0099FF;
+    cursor:pointer;
+}
+.remark span{
+    display:none;
+    position:absolute;
+    padding:5px;
+    top:0px;
+    width:300px;
+    color:#CC3300;
+    background:#FFFADC;
+    border:1px solid #CC6600;
+}
+
+.nsearch{margin-bottom:10px;padding:3px 10px 8px;background-color:#F7F7F7;}
+ .nsearch .nsearch_p{overflow:hidden;_zoom:1;margin-top:5px;}
+ .nsearch .nsearch_p label{float:left;font-size:12px;padding-left:10px;line-height:24px;}
+ .nsearch .nsearch_p .input_text{float:left;padding:2px 3px;line-height:16px;height:16px;width:100px;}
+ .nsearch .nsearch_p .input_radio{float:left;margin-right:3px;margin-top:5px;*margin-top:1px;}
+ .nsearch .nsearch_p .input_checkbox{float:left;margin-right:3px;margin-top:5px;*margin-top:0px;}
+ .nsearch .nsearch_p span{float:left;font-size:12px;padding-right:10px;line-height:24px;}
+ .nsearch .nsearch_p p{float:left;font-size:12px;padding-right:5px;line-height:24px;padding-left:10px;}
+ .nsearch .nsearch_p .input_submit{padding:0px 8px; line-height:24px;height:24px;font-size:12px;margin-left:10px;}
+  .nsearch .nsearch_p .select{padding:1px 0px 1px 3px;float:left;margin-top:2px;margin-right:15px;font-size:14px;}
+
+
+ /* dropdown menu */
+
+ ul.dm {
+	 font-family: Arial, Verdana;
+	 font-size: 14px;
+margin: 0;
+padding: 0;
+	 list-style: none;
+	z-index:999;
+ }
+ul.dm li {
+display: block;
+position: relative;
+float: left;
+}
+ul.dm li ul { display: none; }
+ul.dm li a {
+display: block;
+	 text-decoration: none;
+color: #ffffff;
+       border-top: 1px solid #ffffff;
+padding: 5px 15px 5px 15px;
+background: #2C5463;
+	    margin-left: 1px;
+	    white-space: nowrap;
+}
+
+ul.dm li a:hover { background: #617F8A; }
+ul.dm li:hover ul { 
+display: block; 
+position: absolute;
+   }
+ul.dm li:hover li { 
+float: none;
+       font-size: 11px;
+   }
+ul.dm li:hover a { background: #617F8A; }
+ul.dm li:hover li a:hover { background: #95A9B1; }

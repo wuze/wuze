@@ -1,0 +1,57 @@
+<?php $this->load->view('header_m'); ?>
+<body>
+
+<div class="rgmain">
+<div class="rgtit">
+<h1>管理中心</h1>
+</div>
+<div class="mainbox clearfix">
+<table  border="0" cellpadding="0" cellspacing="1"	bgcolor="8dc8e4">
+	<caption class="capcenter">用户组列表</caption>
+	<tr>
+		<th>组ID：</th>
+		<th>组名</th>
+		<th>操作</th>
+	</tr>	
+	
+	<?php foreach ($list as $key => $value) { ?>
+	
+	<tr>
+		<td class="whtco">组ID：</td>
+		<td class="whtco">组名</td>
+		<td class="whtco">操作</td>
+	</tr>
+	
+	<?php } ?>
+	
+	<tr>
+		<th>栏目简介：</th>
+		<td class="whtco"><textarea class="des"></textarea>(200字以内)</td>
+	</tr>
+	<tr>
+		<th>栏目内容：</th>
+		<td class="whtco"><textarea style="width: 900px; height: 350px;"></textarea></td>
+	</tr>
+	<tr>
+		<th>栏目图片：</th>
+		<td class="whtco"><input type="text" id="" class="selinput" /><input
+			type="button" id="" class="selbtn" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tr_last"><input type="button" id=""
+			class="sub_btn mr10" value="保存" /><input type="button" id=""
+			class="sub_btn mr10" value="重置" /><input type="button" id=""
+			class="sub_btn mr10" value="取消" /></td>
+	</tr>
+</table>
+
+	
+
+	
+
+</div>
+<?php echo $page; ?>
+</div>
+
+
+<?php $this->load->view('footer'); ?>

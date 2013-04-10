@@ -1,0 +1,269 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 控制器描述数组
+DESCARRAY
+$simple['desc'] = '互动专区';
+$simple['actions']  = array(
+'index'=>array('name'=>'问答列表', 'writelog' => 'file'),
+'screening_question'=>array('name'=>'筛选已回答'),
+'search_question'=>array('name'=>'搜索问题'),
+'view_question'=>array('name'=>'查看问题详细', 'writelog' => 'file'),
+'answer_question'=>array('name'=>'回答问题'),
+'delete_question'=>array('name'=>'删除问题'),
+'into_question'=>array('name'=>'进入添加问题页', 'writelog' => 'file'),
+'add_question'=>array('name'=>'保存添加问题'),
+'teacher_do_upload'=>array('name'=>'上传教师图片'),
+);
+DESCARRAY
+*/
+/*
+ * Created on 2011-11-11
+ *
+ *	guo
+ *
+ * To change the template for this generated file go to
+ *
+ */
+
+class Zone extends MY_Controller {
+
+	function __construct()
+    {
+        parent::__construct();
+        $this->load->database();//链接数据库
+
+    }
+
+    public function index(){
+
+    	$pagesize = 10;
+		//当前偏移量
+		$start = $this->uri->segment(2, intval($this->input->get('pn')));
+
+		$this->db->from("qas");
+
+		$total = $this->db->count_all_results();
+
+		//载入分页类
+		$this->load->library('mypage');
+		//显示分页
+		$page = $this->mypage->show($total, $pagesize, site_url(array('c' => 'zone', 'm' => 'index'),'',2));
+
+		$data['page'] = $page;
+
+    	$query = $this->db->get('qas',$pagesize, $start);
+
+		foreach($query->result_array() as $row){
+
+			$data['question'][] = $row;
+
+		}
+
+		 $data['classification'] = array(
+        	'1'=>'学员感言',
+        	'2'=>'家长来信'
+        );
+
+		$this->load->view('admin_zone',$data);
+
+    }
+
+    //已回答，未回答
+
+	public function screening_question($state){
+
+		$this->db->where('state',$state);
+
+		$query = $this->db->get('qas');
+
+		foreach($query->result_array() as $row){
+
+			$data['question'][] = $row;
+
+		}
+
+		$this->load->view('admin_zone',$data);
+
+	}
+
+    //搜索
+    public function search_question(){
+
+		$qid = $this->input->post("qid"); //问题ID
+
+		if($qid){
+
+			$this->db->where('qid', $qid);
+
+			$data['qid'] = $qid;
+
+		}
+
+		$authorid = $this->input->post("authorid"); //提问人ID
+
+		if($authorid){
+
+			$this->db->where('authorid', $authorid);
+
+			$data['authorid'] = $authorid;
+
+		}
+
+		$author = $this->input->post("author");//提问人名称
+
+		if($author){
+
+			$this->db->where('author', $author);
+
+			$data['author'] = $author;
+
+		}
+
+		$question = $this->input->post("question"); //问题
+
+		if($question){
+
+			$this->db->like('question', $question);
+
+			$data['questions'] = $question;
+
+		}
+
+		$category = $this->input->post("category"); //类别
+
+		if($category){
+
+			$this->db->where('catid', $category);
+
+			$data['category'] = $category;
+
+		}
+
+		$query = $this->db->get('qas');
+
+		foreach($query->result_array() as $row){
+
+			$data['question'][] = $row;
+
+		}
+
+		$data['classification'] = array(
+        	'1'=>'学员感言',
+        	'2'=>'家长来信'
+        );
+
+		$this->load->view('admin_zone',$data);
+
+    }
+
+
+    //查看
+	public function view_question($qid){
+
+		$this->db->where('qid',$qid);
+
+		$this->db->order_by('addtime desc');
+
+		$query = $this->db->get('qas');
+
+		foreach($query->result() as $row){
+
+			$data['question'] = $row;
+
+		}
+
+		$this->load->view('zone_detailed',$data);
+
+	}
+
+    //回答
+
+    public function answer_question(){
+
+		$qid = $this->input->post("qid");//qid
+
+		$reply = $this->input->post("reply");//回答内容
+
+		$data = array(
+
+			'reply'=>$reply,
+			'replytime'=>time(),
+			'state'=>1
+
+		);
+
+		$this->db->where('qid',$qid);
+
+		$this->db->update('qas', $data);
+
+		header('Location: /admin/index.php/zone');
+
+    }
+
+    //删除
+
+    public function delete_question($qid){
+
+		$this->db->where('qid',$qid);
+
+		$this->db->delete('qas');
+
+    }
+
+    //进入添加问题页
+
+    public function into_question(){
+
+    	$data['classification'] = array(
+        	'1'=>'学员感言',
+        	'2'=>'家长来信'
+        );
+
+        //年级
+
+		$query = $this->db->get('categorys');
+
+		foreach($query->result_array() as $row){
+
+			$data['grade'][] = $row;
+
+		}
+
+		$this->load->view('zone_into_question',$data);
+
+    }
+
+    //添加问题
+
+    public function add_question(){
+
+		$question = $this->input->post("question"); //问题
+
+		$catid = $this->input->post("catid"); //类型
+
+		$contact = $this->input->post("contact"); //联系方式
+
+		$author = $this->input->post("author"); //名称
+
+		$ip = $_SERVER['REMOTE_ADDR'];
+
+		$data = array(
+
+			'catid'=>$catid,
+			'question'=>$question,
+			'contact'=>$contact,
+			'author'=>$author,
+			'addip'=>$ip,
+			'addtime'=>time(),
+			'authorid'=>$uid = $this->session->userdata('adminid')
+		);
+
+		$this->db->insert('qas',$data);
+
+		header('Location: /admin/index.php/zone');
+
+    }
+
+
+}
+?>

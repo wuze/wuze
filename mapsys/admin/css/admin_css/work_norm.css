@@ -1,0 +1,83 @@
+@charset "utf-8";
+/* CSS Document */
+/***** 全局设置 *****/
+*{margin:0;padding:0;font-family:"宋体", arial;}
+img{border:0;}
+ul{margin:0;padding:0;list-style:none;}
+div,td{font-size:12px;}
+.clear {clear:both;height:0;overflow:hidden;}
+
+/*表单元素*/
+.nfiled{overflow:hidden;_zoom:1;margin-top:5px;}
+.nfiled label{float:left;height:24px;line-height:24px;width:164px;font-size:12px;font-weight:bold;text-align:right;}
+.nfiled .nfiled_em{color:#F00;float:left;width:10px;line-height:24px;}
+.nfiled .nfiled_div{float:left;}
+.nfiled .nfiled_div span{float:left;height:24px;line-height:24px;padding:0 10px;padding-right:15px;font-size:12px;color:#999;}
+.nfiled .nfiled_div .tip{color:#BAEDB9;}/*填写写内容符合要求提示语的样式*/
+.nfiled .nfiled_div .err_tip{color:#F00;}/*填写写内容不符合要求提示语的样式*/
+.nfiled .nfiled_div p{float:left;height:24px;line-height:24px;padding:0 10px;font-size:12px;}
+.nfiled .nfiled_text{float:left;padding:3px;height:16px;line-height:16px;}
+.nfiled .nfiled_radio{float:left;margin-top:5px;*margin-top:0px;}
+.nfiled .nfiled_textarea{float:left;margin-top:5px;*margin-top:0px;resize: none;height:100px;width:400px;padding:5px;line-height:18px;}
+.nfiled .nfiled_select{float:left;line-height:20px;padding:2px 0 1px 3px;}
+.nfiled .nfiled_select option{line-height:20px;}
+/*条件筛选元素*/
+*{padding:0;margin:0;}
+ .nsearch{margin-bottom:10px;padding:8px 10px 8px;background-color:#F7F7F7;overflow:hidden;_zoom:1;}
+ .nsearch  label{float:left;font-size:12px;padding-left:10px;line-height:24px;}
+ .nsearch .input_text{float:left;padding:2px 3px;line-height:16px;height:16px;width:100px;}
+ .nsearch .input_radio{float:left;margin-right:3px;margin-top:5px;*margin-top:1px;}
+ .nsearch .input_checkbox{float:left;margin-right:3px;margin-top:5px;*margin-top:0px;}
+ .nsearch span{float:left;font-size:12px;padding-right:10px;line-height:24px;}
+ .nsearch p{float:left;font-size:12px;padding-right:5px;line-height:24px;padding-left:10px;}
+ .nsearch .input_submit{padding:0px 8px;float:left;margin-left:20px;margin-top:1px;line-height:24px;height:24px;font-size:12px;display:inline;}
+ .nsearch .nsearch_select{float:left;line-height:20px;padding:1px 0 1px 3px;margin-right:5px;margin-top:3px;}
+ .nsearch_div{height:30px;background:#eee;padding:15px 10px 10px;margin-bottom:5px;}
+ .nsearch_ul{overflow:hidden;_zoom:1;height:30px;background:#eee;padding-left:10px;}
+ .nsearch_ul li{float:left;padding:0 10px;line-height:30px;}
+ 
+ /*表格元素*/
+ *{font-family:Tahoma, Arial, Helvetica, Sans-serif,"宋体";}
+ table{width:700px;margin:0px auto;font:Georgia 11px;font-size:12px;color:#333333;text-align:center;border-collapse:collapse;/*细线表格代码*/}
+ table td{border:1px solid #999;/*细线表格线条颜色*/height:22px;}
+ table th{border:1px solid #999;/*细线表格线条颜色*/height:22px;}
+ caption{text-align:center;font-size:12px;font-weight:bold;margin:0 auto;}
+ tr.t1 td {background-color:#fff;}/* 交替行第一行的背景色 */
+ tr.t2 td {background-color:#eee;}/* 交替行第二行的背景色 */
+ tr.t3 td {background-color:#ccc;}/* 鼠标经过时的背景色 */
+ th,tfoot tr td{font-weight:bold;text-align:center;background:#c5c5c5;}
+ th{line-height:30px;height:30px;}
+ tfoot tr td{background:#fff;line-height:26px;height:26px;}
+ thead{border:1px solid #999;}
+ thead tr td{text-align:center;}
+ 
+ /*****城市查询元素*****/
+.ndashboard{border-bottom:1px #666 solid;padding:15px 10px;background:#99B;}
+.ndashboard div.ndashboard_div{float:left;height:24px;line-height:24px;margin-right:20px;margin-left:50px;display:inline;}
+.ndashboard div.ndashboard_div h4{font-size:16px;}
+.ndashboard div.text_div{float:left;height:24px;line-height:24px;}
+.ndashboard div.text_div label{float:left;font-size:14px;}
+.ndashboard input.text100{ width:100px; padding:2px 0 0 4px; border:1px solid #7f9db9; height:19px; line-height:19px;}
+.cursor{ cursor:pointer;}
+.ndashboard select.text100{ width:106px; margin-top:4px; position:absolute; height:19px;}
+.ndashboard div.text_div .search_text{ float:left; line-height:19px; padding-top:4px;}
+.ndashboard div.text_div .search_input{ position:relative;z-index:111;width:132px; float:left; background:#FFF; border:1px solid #7f9db9;margin-top:2px;margin-right:10px;}
+.ndashboard div.text_div .search_input a{width:108px; float:left; padding-right:18px;height:18px; background:url(../images/l2.gif) no-repeat right 0;margin-top:1px;}
+.ndashboard div.text_div #tanchu a{ background:none;}
+.ndashboard input.text80{ float:left; border:none; padding-left:4px;width:112px; height:16px; line-height:16px;}
+#tanchu{ position:absolute; width:140px; left:0px;background:#9C0; z-index:999;border:1px solid #333;}
+#tanchu .tc_ul li{float:left;width:65px;line-height:24px; text-align:center;margin-right:5px;}
+.ndashboard div.text_div #tanchu .tc_ul a{color:#600;display:block;width:50px;height:24px;line-height:20px;overflow:hidden;text-decoration:none;cursor:pointer;}
+.ndashboard div.text_div #tanchu .tc_ul a:hover{background:#9F6;}
+
+/*x下拉菜单*/
+#all{background:#2760A7;overflow:hidden;padding:0 5px;}
+#jsddm{ margin: 0;padding: 0;}
+#jsddm li{float: left;list-style: none;font: 12px Tahoma, Arial,"宋体";}
+#jsddm li a{display: block;background:#2760A7;padding:5px 10px;line-height:24px;text-decoration: none;border-right: 1px solid #CFCEC3;color:#fff;font-weight:bold;font-size:14px;white-space: nowrap}
+#jsddm li a.borber_none{border:none;}
+#jsddm li a:hover{background: #4D7CBC;color:#FFC007;}
+#jsddm li ul{margin: 0;padding: 0;position: absolute;visibility: hidden;border-top: 1px solid white}
+#jsddm li ul li{float: none;display: inline;border-bottom:#826142;}
+#jsddm li ul li a{width: auto;background: #3267AD;line-height:24px;color: #EFEEE5;}
+#jsddm li ul li a:hover{background: #7DA1BF;color:#D3D70D;}

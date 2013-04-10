@@ -1,0 +1,32 @@
+<?php $this->load->view('header_m'); ?>
+<body>
+
+<div class="rgmain">
+<div class="rgtit">
+<h1>管理中心</h1>
+</div>
+<div class="mainbox clearfix">
+<form action="<?php echo site_url(array('c' => 'usergroup', 'm' => 'save') );?>" method="post">
+<table width="80%" border="0" cellpadding="0" cellspacing="1"	bgcolor="8dc8e4">
+	<caption class="capcenter">新建用户组</caption>
+	<tr>
+		<th>组名：</th>
+		<td class="whtco"><input  name="name" value="<?php echo $result[name];?>" type="text" size="60"></td>
+	</tr>
+	
+	<tr>
+		<td  colspan="2" class="tr_last">
+			<input type="hidden" name="gid" value="<?php echo $result[gid];?>" />
+			<input type="submit" class="sub_btn mr10" value="保存" />
+			<input type="reset"	class="sub_btn mr10" value="重置" />		
+		</td>
+	</tr>
+</table>
+</form>	
+
+</div>
+
+</div>
+
+
+<?php $this->load->view('footer'); ?>

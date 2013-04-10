@@ -1,0 +1,184 @@
+<?php $this->load->view('header_m'); ?>
+
+
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<a href="<?php echo site_url('/teacher/')?>"><h1>所有教师</h1></a><a href="<?php echo site_url('/teacher/teacher_screening/1')?>"><h1>金牌教师</h1></a><a href="<?php echo site_url('/teacher/teacher_screening/0')?>"><h1>普通教师</h1></a>
+</div>
+<div class="mainbox">
+<table width="1100" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+<caption class="capcenter">上传教师头像</caption>
+	<tr>
+		<th>头像：</th>
+		<td>
+			<form target="upload-frame" action="<?php echo site_url('/teacher/teacher_do_upload/');?>" id="image_upload" name="image_upload" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+			<input type="file" name="userfile" size="20" id="img"/>
+			<input type="submit" value="上传" id="submit_img" name="submit_img"/>
+			</form>
+		</td>
+	</tr>
+</table>
+<form method="post" id="form_updata" name="form_updata" action="<?php echo site_url('/teacher/teacher_updata/');?>">
+<table width="1100" border="0" cellpadding="0" cellspacing="1"
+	bgcolor="8dc8e4">
+	<caption class="capcenter">修改教师信息</caption>
+	<tr>
+		<th>ID：</th>
+		<td><?php echo $teachers->tid; ?><input type="hidden" name="tid" value="<?php echo $teachers->tid; ?>"/></td>
+	</tr>
+	<tr>
+		<th>教师名字：</th>
+		<td><input type="text" name="teachername" value="<?php echo $teachers->teachername; ?>"/></td>
+		<input type="hidden" id="img_path" name="img_path" value="<?php echo $teachers->pic;  ?>"/>
+	</tr>
+	<tr>
+		<th>课程：</th>
+		<td>
+
+		<?php
+
+		$catid = explode(',',$teachers->catid);
+
+		$i = 0;
+
+		foreach($subjects as $key=>$subjects_val){
+
+				if($subjects_val['courseid'] == $catid[$i]){
+
+					echo '<input type="checkbox" name="catid[]" checked value="'.$subjects_val['courseid'].'"/>'.$subjects_val['coursename'].'';
+
+				}else{
+
+					echo '<input type="checkbox" name="catid[]" value="'.$subjects_val['courseid'].'"/>'.$subjects_val['coursename'].'';
+
+				}
+
+				$i++;
+
+		}
+
+		?>
+
+		</td>
+	</tr>
+	<tr>
+		<th>是否金牌教师：</th>
+		<td>
+		<select name="isgold" id="isgold" size="1" class="gold_sapji a">
+			<option value=''>请选择</option>
+			<option value='1' <?php if ($teachers->isgold == 1){ echo "selected"; } ?>>是</option>
+			<option value='0' <?php if ($teachers->isgold == 0){ echo "selected"; } ?>>否</option>
+
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>推荐到首页：</th>
+		<td>
+		<select name="recommend" id="recommend" size="1" class="gold_sapji a">
+
+			<option value=''>请选择</option>
+			<option value='1' <?php if ($teachers->recommendid == 1){ echo "selected"; } ?>>是</option>
+			<option value='0' <?php if ($teachers->recommendid == 0){ echo "selected"; } ?>>否</option>
+
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>年级：</th>
+		<td>
+
+		<select name="schoolid" id="schoolid" size="1" class="gold_sapji a">
+<option value=''>请选择年级</option>
+			<?php foreach($grade as $item):?>
+					<option value='<?php  echo $item['catid'] ?>' <?php  if ($teachers->schoolid == $item['catid']) {echo "selected";} ?>><?php echo $item['catname'];  ?></option>
+			<?php  endforeach; ?>
+
+		</select>
+
+		</td>
+	</tr>
+	<tr>
+		<th>头像：</th>
+		<td><div id="avatar-preview" name="avatar-preview">
+
+			<?php
+				if($teachers->pic){
+
+					echo '<img width="100" height="100" src="'.$teachers->pic.'" />';
+
+				}
+
+			?>
+
+		</div></td>
+	</tr>
+	<tr>
+		<th>教学理念：</th>
+		<td><textarea name="logos" style="width: 400px; height: 100px;" value=""><?php echo $teachers->logos; ?></textarea></td>
+	</tr>
+	<tr>
+		<th>个人简介：</th>
+		<td>
+		<textarea name="summary" style="width: 400px; height: 100px;" value=""><?php echo $teachers->summary; ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>教学风格：</th>
+		<td>
+		<textarea name="styles" style="width: 400px; height: 100px;" value=""><?php echo $teachers->styles; ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>教学成果：</th>
+		<td>
+		<textarea name="achievement" style="width: 400px; height: 100px;" value=""><?php echo $teachers->achievement; ?></textarea>
+
+		</td>
+	</tr>
+	<tr>
+		<th>教学特点：</th>
+		<td>
+		<textarea name="feature" style="width: 400px; height: 100px;" value=""><?php echo $teachers->feature; ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<th>浏览量：</th>
+		<td>
+		<?php echo $teachers->clicks; ?>
+		</td>
+	</tr>
+	<tr>
+		<th>增加时间：</th>
+		<td>
+			<?php echo date('Y-m-d H:i:s',$teachers->addtime); ?>
+		</td>
+	</tr>
+	<tr>
+		<th>添加人ID：</th>
+		<td>
+		<?php echo $teachers->adminid; ?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tr_last"><input type="submit" id="updata_submit" name="updata_submit" style="cursor:pointer;" class="sub_btn mr10" value="保存" /></td>
+	</tr>
+</table>
+</form>
+</div>
+</div>
+<iframe id="upload-frame" name="upload-frame" style="display:none;"></iframe>
+<?php $this->load->view('footer'); ?>
+<script language="JavaScript" type="text/javascript">
+	$('#submit_img').click(function(){
+		$('#image_upload').submit();
+	});
+
+	function UPLOAD_CALLBACK(photo) {
+			$("#avatar-preview").html('<img width="100" height="100" class="zoom" src="' + photo + '"/>');
+			$('#img_path').val(photo);
+	}
+
+</script>

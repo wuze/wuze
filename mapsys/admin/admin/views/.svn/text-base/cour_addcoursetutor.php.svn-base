@@ -1,0 +1,71 @@
+<?php $this->load->view('header_m'); ?>
+
+<body>
+<div class="rgmain">
+<div class="rgtit">
+<h1>课程辅导</h1>
+</div>
+<div class="mainbox">
+<div class="">
+<form method="post" action="<?php echo site_url('/course/addclass/')?>" onsubmit="return DataChk();">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="8dc8e4">
+	<caption class="capcenter">增加课程辅导</caption>
+	<tr>
+		<th>所在年级：</th>
+		<td>
+		<select name="data[catid]"  size="1" class="gold_sapji a" style="width:120px;">
+		<option value=''>请选择年级</option>
+		<?php foreach ($classcate as $key=>$value): ?>
+		<option value='<?php echo $value['catid']?>' ><?php echo $value['catname']?></option>
+		<?php  endforeach; ?>
+		
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>科目类别：</th>
+		<td>		
+		<select name="data[classname]"  size="1" class="gold_sapji a" style="width:120px;">
+		<option value=''>请选择科目</option>
+		<?php foreach ($coursecate as $key=>$value): ?>
+		<option value='<?php echo $value['courseid']?>' ><?php echo $value['coursename']?></option>
+		<?php  endforeach; ?>
+		</select></td>
+	</tr>
+
+	<tr>
+		<th>适合人群：</th>
+		<td><input name="data[partner]" value=""></td>
+	</tr>
+	<tr>
+		<th>教学内容：</th>
+		<td><textarea name="data[teachcontent]" style="width: 400px; height: 100px;"></textarea></td>
+	</tr>
+	
+	
+	<tr>
+		<th>老师说：</th>
+		<td><textarea name="data[teachersay]" style="width: 400px; height: 100px;"></textarea></td>
+	</tr>
+	
+	
+	<tr>
+		<th>教学计划：</th>
+		<td><textarea name="data[plan]" style="width: 400px; height: 100px;"></textarea></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="tr_last"><input type="submit" id="updata_submit" name="updata_submit" style="cursor:pointer;" class="sub_btn mr10" value="保存" /></td>
+	</tr>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+function DataChk(){
+	if (  $("input[name=data[plan]]").val()=='' ){
+		alert("内容不能为空");
+		return false;
+	}
+	return true;
+}
+</script>
+<?php $this->load->view('footer'); ?>

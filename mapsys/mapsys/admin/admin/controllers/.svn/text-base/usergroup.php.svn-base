@@ -1,0 +1,127 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * 控制器描述数组
+ DESCARRAY
+ $simple['desc'] = '用户组管理';
+ $simple['actions']  = array(
+ 'index'=>array('name'=>'用户组列表', 'writelog' => 'file'),
+ 'create'=>array('name'=>'添加用户组'),
+ 'save'=>array('name'=>'修改用户组')
+ );
+ DESCARRAY
+ */
+class Usergroup extends MY_Controller {
+	/**
+	 * 用户组管理
+	 * @author jagy
+	 * @version 1.0
+	 * @package usergrup
+	 */
+
+	function __construct(){
+		parent::__construct();
+		$this->load->helper('url');
+	}
+
+	/**
+	 * 用户组列表
+	 * @author jagy
+	 * @last 2011-11-11 10:24
+	 */
+	public function index(){
+
+
+
+		//记录数的开始
+		$per_page = $this->input->get('per_page');
+
+		$data['list'] = array();
+
+		//引用分页开始
+		$this->load->library('mypage');
+		//show 参数  （总条数， 每页显示的条数， 跳转地址）
+		$data['page'] = $this->mypage->show(100, 10, site_url(array("c"=>"usergroup", 'm'=>'index')));
+
+
+
+		$this->load->view('usergroup_index', $data);
+	}
+
+
+	/**
+	 * 创建用户组
+	 * @author jagy
+	 */
+	public function create(){
+
+		$gid = $this->input->get('gid');
+
+			
+		if($gid){
+			//获取原有的组
+		}
+		else{
+				
+		}
+
+		$data = '';
+
+		$this->load->view('usergroup_create', $data);
+	}
+
+	/**
+	 * 保存用户组数据
+	 *
+	 */
+	public function save(){
+
+		$data['name'] = $this->input->post('name');
+		$data['gid'] = $this->input->post('gid');
+
+
+		$this->load->library("form_validation");//表单验证
+
+		$this->form_validation->set_message('required', "%s不能为空");
+		$this->form_validation->set_message('min_length', "%s不能少于%s个字符");
+		$this->form_validation->set_rules('name', '组', 'required|min_length[3]');
+
+		if($this->form_validation->run() == FALSE){
+			$this->load->view('login_index');
+		}
+
+		$result = $this->db->get_where('admingroup', array('groupname' => $data['name']));
+	
+		
+
+		if($result->row()->groupname){
+			$out['result'] =  $data;
+			$this->error_msg = "已经有此组名，请取另外的名字";
+			$this->load->view('usergroup_create', $out);
+				
+		}
+		else{
+			if(!$gid){
+				$flag = $this->db->insert("admingroup", array('groupname' => $data['name']));
+			}
+			else{
+				$this->db->where('gid', $data['gid']);
+				$flag = $this->db->update('admingroup', array('groupname' => $data['name']));
+			}
+
+			if($flag){
+				redirect(site_url(array('c' => 'usergroup')));
+			}
+			else{
+				$out['result'] =  $data;
+				$this->error_msg = "已经有此组名，请取另外的名字";
+				$this->load->view('usergroup_create', $out);
+			}
+		}
+
+
+
+	}
+
+
+
+}
