@@ -30,7 +30,7 @@ class Welcome extends MY_Controller {
 			$this->load->view("admin_home",$data);
 		}else{
 			$data['pagetitle']="登录";
-			$this->load->view('login');
+			$this->load->view('login',$data);
 		}
 	}
 	

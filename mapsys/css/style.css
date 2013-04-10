@@ -139,8 +139,6 @@ background-position:bottom left
 	display:block;
 	margin:0 0 0 80px;
 }
-
-
 .block{
 float:left;
 margin:0 0 20px 0;
@@ -162,52 +160,77 @@ margin:0 0 20px 0;
 padding:0 0 18px 0;
 }
 #sidebar .more{
-margin:0 0 0 60px;
+	margin:0 0 0 60px;
 }
+
+.container{
+	float:left;
+	margin:100px 0 20px 0;
+	width:240px;
+	background:url(/images/blue.png) repeat-x top left; 
+	color:#074384;
+}
+
 .sponsors{
-margin:0 0 20px 0;
+	border:solid 2px #000000;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 4px;
+	margin: 0 0  5px 5px;
+	float:left;
+	width:240px;
+	background:url(/images/grey.png) repeat-x top left; 
+	color:#6D7072;
 }
+
 .sponsors a{
-display:block;
-margin:11px 0 0 13px;
+	border:solid 2;
+	display:block;
+	margin:11px 0 10px 13px;
+	cursor:pointer;
 }
+
+.sponsors .subinfo
+{	
+}
+
 .popular{
-margin:17px 0 0 15px;
+	margin:17px 0 0 15px;
 }
 .popular li{
-list-style-type:none;
-background:url(/images/bullet.gif) left 3px no-repeat;
-padding:0 0 0 25px;
-line-height:23px;
-height:23px;
+	list-style-type:none;
+	background:url(/images/bullet.gif) left 3px no-repeat;
+	padding:0 0 0 25px;
+	line-height:23px;
+	height:23px;
 }
 .popular a{
-font-family:Arial, Helvetica, sans-serif;
-font-size:12px;
-color:#6D7072;
-text-decoration:underline
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#6D7072;
+	text-decoration:underline
 }
 .popular a:visited{text-decoration:underline}
 .popular a:hover{text-decoration:none}
 #footer{
-width:100%;
-border-top:1px solid #D0D1D2;
-padding:15px 0 70px 0;
-font-family:Arial, Helvetica, sans-serif;
-font-size:12px;
-color:#6D7072;
+	width:100%;
+	border-top:1px solid #D0D1D2;
+	padding:15px 0 70px 0;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#6D7072;
 }
 #footer span{
-float:left;
+	float:left;
 }
 #footer div{
-width:988px;
-margin:0 auto;
-padding:0 0 0 15px;
+	width:988px;
+	margin:0 auto;
+	padding:0 0 0 15px;
 }
 #footer a{
-color:#0893EF;
-text-decoration:underline
+	color:#0893EF;
+	text-decoration:underline
 }
 #footer a:visited{text-decoration:underline}
 #footer a:hover{text-decoration:none}
