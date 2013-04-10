@@ -24,6 +24,7 @@ class Welcome extends MY_Controller {
 	
 	public function index()
 	{
+		/*
 		$ses =  $this->session->userdata('login_user');
 		if($ses['login_user_id']&&$ses['login_user_name']){
 			$data['pagetitle']="后台管理";
@@ -32,6 +33,9 @@ class Welcome extends MY_Controller {
 			$data['pagetitle']="登录";
 			$this->load->view('login',$data);
 		}
+		*/
+		$this->load->view("admin_home");
+		
 	}
 	
 }
