@@ -4,25 +4,16 @@
 	<div id="site">
 		<div id="header">
 			<a href="#" class="logo">
-				<img src="images/logo.gif"  width="200" height="110" />
-				<img src="images/title.png"  width="300" height="110" />
-			</a>				
+				<img src="images/logo.gif"   width="200" height="110" />
+			</a>	
+			<img src="images/title.png"  width="300" height="110" />						
 			<?php $wk = array(1=>"星期一",2=>"星期二",3=>"星期三",4=>"星期四",5=>"星期五",6=>"星期六",0=>"星期天");
 				$now = date("w");
 			?>
-			<a style="float:right;margin-top:100px;margin-right:50px;font-weight:bolder;font-color:RGB(23,45,167);"><?php echo "今天是".date("Y-m-d")."  ".$wk[$now]; ?></a>																																
+			
 			<div id="menu">
-			<!-- 
-				<ul>
-					<li><a href="#" class="but1 active"><img src="images/spacer.gif" alt="" width="106" height="42" /></a></li>
-					<li><a href="#" class="but2"><img src="images/spacer.gif" alt="" width="118" height="42" /></a></li>
-					<li><a href="#" class="but3"><img src="images/spacer.gif" alt="" width="106" height="42" /></a></li>
-					<li><a href="#" class="but4"><img src="images/spacer.gif" alt="" width="99"  height="42" /></a></li>
-					<li><a href="#" class="but5"><img src="images/spacer.gif" alt="" width="154" height="42" /></a></li>
-					<li><a href="#" class="but6"><img src="images/spacer.gif" alt="" width="129" height="42" /></a></li>
-				</ul>
-			-->
-				<ul style="float:right;font-weight:bolder;margin-top:12px;margin-right:100px;cursor:pointer;">
+				<ul style="float:left;font-weight:bolder;margin-top:12px;margin-left:20px;font-color:#000FFF;"><li ><?php echo "今天是".date("Y-m-d")."  ".$wk[$now]; ?></li></ul>
+				<ul style="float:right;font-weight:bolder;margin-top:12px;margin-right:50px;cursor:pointer;">
 				<li>关于我们</li>
 				<li>|</li>
 				<li>帮助</li>
@@ -30,8 +21,9 @@
 			</div>
 		</div>
 		
-		<!-- 左边栏   -->
+	
 		<div id="content">	
+			<!-- 左边栏   -->
 			<div id="main">
 				<div class="current" id="map_canvas" style="border:1px solid #ddd;"></div>
 			</div>
@@ -41,6 +33,8 @@
 				<div class="block">
 					<div class="news">
 					
+					
+						<!--   搜索条件   -->
 						<div id="tabbed_box_1">
 							<div class="tabbed_area">
 									<ul class="tabs">

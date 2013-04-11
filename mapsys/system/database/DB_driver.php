@@ -71,7 +71,6 @@ class CI_DB_driver {
 	var $limit_used;
 
 
-
 	/**
 	 * Constructor.  Accepts one parameter containing the database
 	 * connection settings.

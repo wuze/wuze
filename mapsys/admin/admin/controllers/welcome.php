@@ -22,6 +22,7 @@ class Welcome extends MY_Controller {
 		session_start();
 	}
 	
+	
 	public function index()
 	{
 		/*

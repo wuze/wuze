@@ -23,19 +23,17 @@ body{
 }
 .logo{
 	margin:0 0 0 40px;
-	/ margin:0 0 0 42px;
 	float:left;
 }
 #menu{
-border-radius: 15px 25px 0px 0px; 
--webkit-border-radius: 15px 25px 0px 0px; 
--moz-border-radius: 15px 25px 0px 0px; 
+	border-radius: 15px 25px 0px 0px; 
+	-webkit-border-radius: 15px 25px 0px 0px; 
+	-moz-border-radius: 15px 25px 0px 0px; 
 
 	background:url(/images/menu_bg.jpg) top left no-repeat;
 	width:1000px;
 	height:46px;
 	float:left;
-	/ float:none;
 	margin:0 0 0 0;
 	padding:1px 0 0 4px;
 }
