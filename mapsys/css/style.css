@@ -25,6 +25,55 @@ body{
 	margin:0 0 0 40px;
 	float:left;
 }
+
+.labelClass{
+	display: block;
+	float: left;
+	height: 27px;
+	font-size: 12px;
+	line-height: 27px;
+}
+
+.inputClass{
+	border: none;
+	height: 14px;
+	width: 240px;
+	line-height: 14px;
+	padding: 6px 0 6px 10px;
+	font-size: 12px;
+	border-top: 1px solid rgb(202, 202, 202);
+	border-left: 1px solid rgb(202, 202, 202);
+	border-right: 1px solid rgb(240, 240, 240);
+	border-bottom: 1px solid rgb(240, 240, 240);
+	float: left;
+	margin-right: 5px;
+}
+
+.selectClass{
+	float: left;
+	height: 28px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	margin-right: 10px;
+}
+
+.btnClass {
+	width: 71px;
+	height: 30px;
+	padding-left: 30px;
+	line-height: 30px;
+	text-align: left;
+	color: rgb(0, 64, 125);
+	font-weight: bold;
+	font-size: 12px;
+	background: url("/images/searchBut.png") no-repeat left top;
+	border: none;
+	cursor: pointer;
+}
+
+
 #menu{
 	border-radius: 15px 25px 0px 0px; 
 	-webkit-border-radius: 15px 25px 0px 0px; 

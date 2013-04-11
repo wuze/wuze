@@ -43,31 +43,50 @@
 										<li><a href="javascript:tabSwitch('tab_3', 'content_3');" title="content_3" class="tab">线路查询</a></li>
 									</ul>
 									
-									<div id="content_1" class="content">
+									<div id="content_1" class="content"  style="width:234px;">
 										<table>
-										<tr><td>名称:</td><td><input name="addr_name"/></td></tr>
+										<tr style="width:140px;">
+											<td>名称:</td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
+										</tr>
+
 										<tr>
-										<td>所属类别:</td>
-										<td>
-											<select style="width:154px;">
+											<td>所属类别:</td>
+											<td>
+												<select class="selectClass" style="width:154px;margin-top:10px;">
 														<option>A</option>
-											</select>
-										</td>
+												</select>
+											</td>
+										</tr>
+
+										<tr>
+											<td>所属区县:</td>
+											<td>
+												<select  class="selectClass" style="width:154px;margin-top:10px;">
+													<option>B</option>
+												</select>
+											</td>
 										</tr>
 										
-										<tr><td>所属区县:</td>
-										<td><select style="width:154px;"><option>B</option></select></td></tr>
-										<tr ><td colspan="2"><input type="button" name="查询" value="查询" style="width:30xp;float:right;"/></td></tr>
+										<tr >
+											<td colspan="2">
+												<input type="button" class="btnClass" name="查询" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
+											</td>
+										</tr>
 										</table>
 									</div>
-									<div id="content_2" class="content">
+									
+									
+									
+									
+									<div id="content_2" class="content" style="width:234px;">
 										<table>
 										<tr><td></td><td></td></tr>
 										<tr><td></td><td></td></tr>
 										<tr><td></td><td></td></tr>
 										</table>
 									</div>
-									<div id="content_3" class="content">
+									<div id="content_3" class="content" style="width:234px;">
 										<table>
 										<tr><td></td><td></td></tr>
 										<tr><td></td><td></td></tr>
