@@ -1,13 +1,12 @@
 $(document).ready(function(){
-	
 	$("a.tab").click(function(){
 		
 		$(".active").removeClass("active");
 		$(this).addClass("active");
-		$(".tabContent").slideUp();
+		$(".tabContent").slideUp("slow");
 		
-		var content_show=$(this).attr("title");
-		$("#"+content_show).slideDown();
+		var content_show=$(this).attr("name");
+		$("#"+content_show).slideDown("slow");
 	})
 });
 
@@ -19,6 +18,9 @@ function tabSwitch(new_tab, new_content) {
 	document.getElementById('content_3').style.display = 'none';		
 	document.getElementById(new_content).style.display = 'block';	
 		
+	document.getElementById('tab_1').className = '';  
+    document.getElementById('tab_2').className = '';  
+    document.getElementById('tab_3').className = '';          
 	document.getElementById(new_tab).className = 'active';		
 
 }

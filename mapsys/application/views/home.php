@@ -38,9 +38,9 @@
 						<div id="tabbed_box_1">
 							<div class="tabbed_area">
 									<ul class="tabs">
-										<li><a href="javascript:tabSwitch('tab_1', 'content_1');"  class="tab active">地名查询</a></li>
-										<li><a href="javascript:tabSwitch('tab_2', 'content_2');"  class="tab">周边查询</a></li>
-										<li><a href="javascript:tabSwitch('tab_3', 'content_3');"  class="tab">线路查询</a></li>
+										<li ><a id="tab_1" href="javascript:tabSwitch('tab_1', 'content_1');"  name="content_1" class="tab active">地名查询</a></li>
+										<li ><a id="tab_2" href="javascript:tabSwitch('tab_2', 'content_2');"  name="content_2" class="tab">周边查询</a></li>
+										<li ><a id="tab_3" href="javascript:tabSwitch('tab_3', 'content_3');"  name="content_3" class="tab">线路查询</a></li>
 									</ul>
 									
 									<div id="content_1" class="content"  style="width:234px;">

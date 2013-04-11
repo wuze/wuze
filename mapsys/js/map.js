@@ -5,7 +5,6 @@ if(bmaplng==undefined) var bmaplng;
 if(bmaplat==undefined) var bmaplat;
 var bmap;
 
-
 // 初始化地图
 // 默认显示当前所在城市
 function BmapInit() {  
