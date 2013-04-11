@@ -47,22 +47,22 @@
 										<table>
 										<tr style="width:140px;">
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:</span></td>
-											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name" id=""/></td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name" id="addr_name"/></td>
 										</tr>
 
 										<tr>
-											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" id="addr_cat">所属类别:</span></td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" >所属类别:</span></td>
 											<td>
-												<select class="selectClass" style="width:154px;margin-top:10px;">
+												<select class="selectClass" style="width:154px;margin-top:10px;" name="addr_cat" id="addr_cat">
 														<option>A</option>
 												</select>
 											</td>
 										</tr>
 
 										<tr>
-											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" id="addr_prov">所属区县:</span></td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" >所属区县:</span></td>
 											<td>
-												<select  class="selectClass" style="width:154px;margin-top:10px;">
+												<select  class="selectClass" style="width:154px;margin-top:10px;" id="addr_prov" name="addr_prov">
 													<option>B</option>
 												</select>
 											</td>
@@ -96,7 +96,7 @@
 										<tr>
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">距&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;离:</span></td>
 											<td>
-												<select  class="selectClass" style="width:154px;margin-top:10px;" name="area_dis" id="area_dis">
+												<select  class="selectClass" style="width:154px;margin-top:10px;" name="area_dist" id="area_dist">
 													<option>B</option>
 												</select>
 											</td>

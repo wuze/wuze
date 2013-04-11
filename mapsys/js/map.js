@@ -1,55 +1,13 @@
 var city_name;
 
-
-function change_map_search(obj,type){
-	if(type==0){
-		$('#search_txt').val('请先选择搜索方式');
-		return false;
-	}else{
-		if($('#city_id').val()!=0){
-			city_name = $.trim($('#city_id').find("option:selected").text());
-			if(!city_name){
-				$(obj).val(0);
-				$('#search_txt').html('请先选择搜索方式');
-				La.Dialog.tip('请选择该商家的城市！');
-				return false;
-			}
-		}else{
-			$(obj).val(0);
-			$('#search_txt').html('请先选择搜索方式');
-			La.Dialog.tip('请先商家所在选择城市');
-			return false;
-		}
-		if(type==1){
-			var address = $.trim($('#b_address').val());
-			if(!address){
-				La.Dialog.tip('请输入商家的地址');
-				$(obj).val(0);
-				$('#search_txt').html('请先选择搜索方式');
-				return false;
-			}
-			$('#search_txt').val(city_name+' '+address);
-		}else{
-			var sp_name = $.trim($('#b_name').val());
-			if(!sp_name){
-				La.Dialog.tip('请先输入商家名称');
-				$(obj).val(0);
-				$('#search_txt').html('请先选择搜索方式');
-				return false;
-			}
-			$('#search_txt').val(city_name+' '+sp_name);
-		}
-	}
-}
-
 var imgurl = "http://d2.img.com/";
 if(bmaplng==undefined) var bmaplng;
 if(bmaplat==undefined) var bmaplat;
 var bmap;
 
 
-
-//初始化地图
+// 初始化地图
+// 默认显示当前所在城市
 function BmapInit() {  
  	bmap = new BMap.Map('map_canvas');	
 	bmaplat=$('#s_lat').val();
@@ -122,7 +80,7 @@ function setLngLat(marker){
 
 //添加地标
 function addMarker(point, index) {
-	var myIcon = new BMap.Icon("static/img/other/gaode/" + (index + 1) + ".png", new BMap.Size(22, 29), {
+	var myIcon = new BMap.Icon("/images/map/" + (index + 1) + ".png", new BMap.Size(22, 29), {
 		anchor: new BMap.Size(10, 27)
 	});
 	
@@ -163,8 +121,19 @@ function searchPoint()
 		return;
 	}
 	
-	
-	
+	bmap.clearOverlays();    //清除地图上所有覆盖物
+	var search_txt = addr_name;
+	var bmyGeo = new BMap.Geocoder();
+	bmyGeo.getPoint(search_txt, function(point){
+	if (point) {
+			bmap.centerAndZoom(point, 18);
+			addMarker(point,1);
+	}
+	else
+	{
+			alert('查无此点，请输入“xx市xx镇xx村xx街道这样的地址”');  
+	}
+	},"中国");
 }
 
 function searchArea()
