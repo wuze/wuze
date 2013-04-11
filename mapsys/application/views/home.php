@@ -47,11 +47,11 @@
 										<table>
 										<tr style="width:140px;">
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:</span></td>
-											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name" id=""/></td>
 										</tr>
 
 										<tr>
-											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">所属类别:</span></td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" id="addr_cat">所属类别:</span></td>
 											<td>
 												<select class="selectClass" style="width:154px;margin-top:10px;">
 														<option>A</option>
@@ -60,7 +60,7 @@
 										</tr>
 
 										<tr>
-											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">所属区县:</span></td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" id="addr_prov">所属区县:</span></td>
 											<td>
 												<select  class="selectClass" style="width:154px;margin-top:10px;">
 													<option>B</option>
@@ -70,26 +70,24 @@
 										
 										<tr >
 											<td colspan="2">
-												<input type="button" onclick="searchPoint();" class="btnClass" name="查询" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
+												<input type="button" onclick="searchPoint();" class="btnClass" name="query" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
 											</td>
 										</tr>
 										</table>
 									</div>
 									
 									
-									
-									
 									<div id="content_2" class="content" style="width:234px;">
 										<table>
 										<tr style="width:140px;">
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</span></td>
-											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="area_name" id="area_name"/></td>
 										</tr>
 
 										<tr>
-											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">所属类别:</span></td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;" >所属类别:</span></td>
 											<td>
-												<select class="selectClass" style="width:154px;margin-top:10px;">
+												<select class="selectClass" style="width:154px;margin-top:10px;" name="area_cat" id="area_cat">
 														<option>A</option>
 												</select>
 											</td>
@@ -98,7 +96,7 @@
 										<tr>
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">距&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;离:</span></td>
 											<td>
-												<select  class="selectClass" style="width:154px;margin-top:10px;">
+												<select  class="selectClass" style="width:154px;margin-top:10px;" name="area_dis" id="area_dis">
 													<option>B</option>
 												</select>
 											</td>
@@ -116,13 +114,13 @@
 										<table>
 										<tr style="width:140px;">
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">此处出发:</span></td>
-											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="path_from" id="path_from"/></td>
 										</tr>
 
 										<tr>
 											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">到达此处:</span></td>
 											<td>
-												<input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/>
+												<input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="path_to" id="path_to"/>
 											</td>
 										</tr>
 										<tr >

@@ -42,10 +42,12 @@ function change_map_search(obj,type){
 	}
 }
 
-var imgurl = "http://d2.lashouimg.com/";
+var imgurl = "http://d2.img.com/";
 if(bmaplng==undefined) var bmaplng;
 if(bmaplat==undefined) var bmaplat;
 var bmap;
+
+
 
 //初始化地图
 function BmapInit() {  
@@ -115,9 +117,12 @@ function setLngLat(marker){
 	});
 }
 
+
+
+
 //添加地标
 function addMarker(point, index) {
-	var myIcon = new BMap.Icon( imgurl + "static/img/other/gaode/" + (index + 1) + ".png", new BMap.Size(22, 29), {
+	var myIcon = new BMap.Icon("static/img/other/gaode/" + (index + 1) + ".png", new BMap.Size(22, 29), {
 		anchor: new BMap.Size(10, 27)
 	});
 	
@@ -143,6 +148,56 @@ function getLngLat(marker){
 		b2gFitLocation();
 		marker.openInfoWindow(new BMap.InfoWindow('已经选定坐标：'+e.point.lng+","+e.point.lat));
 	});
+}
+
+
+
+function searchPoint()
+{
+	var addr_name = $('#addr_name').val();
+	var addr_car  = $('#addr_cat').find('option:selected').text();
+	var addr_prov = $('#addr_prov').find('option:selected').text();
+	if(!addr_name)
+	{
+		alert("请输入名称");
+		return;
+	}
+	
+	
+	
+}
+
+function searchArea()
+{
+	var area_name = $('#area_name').val();
+	var area_car  = $('#area_cat').find('option:selected').text();
+	var area_dist = $('#area_dist').find('option:selected').text();
+	if(!area_name)
+	{
+		alert("请输入地址");
+		return;
+	}
+	
+	
+	
+	
+}
+function searchPath()
+{
+	var path_from = $('#path_from').text();
+	var path_to   = $('#path_to').text();
+	
+	if(!path_from)
+	{
+		alert("请输入出发地点");
+		return;
+	}
+	
+	if(!path_to)
+	{
+		alert("请输入目的地点");
+		return;
+	}
 }
 
 
@@ -279,12 +334,4 @@ function onmouseout_MarkerStyle(pointid, thiss) { //鼠标移开后点样式恢�
 }
 
 
-function searchPoint()
-{
-}
-function searchArea()
-{
-}
-function searchPath()
-{
-}
+
