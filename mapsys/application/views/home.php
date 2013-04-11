@@ -38,20 +38,20 @@
 						<div id="tabbed_box_1">
 							<div class="tabbed_area">
 									<ul class="tabs">
-										<li><a href="javascript:tabSwitch('tab_1', 'content_1');" title="content_1" class="tab active">地名查询</a></li>
-										<li><a href="javascript:tabSwitch('tab_2', 'content_2');" title="content_2" class="tab">周边查询</a></li>
-										<li><a href="javascript:tabSwitch('tab_3', 'content_3');" title="content_3" class="tab">线路查询</a></li>
+										<li><a href="javascript:tabSwitch('tab_1', 'content_1');"  class="tab active">地名查询</a></li>
+										<li><a href="javascript:tabSwitch('tab_2', 'content_2');"  class="tab">周边查询</a></li>
+										<li><a href="javascript:tabSwitch('tab_3', 'content_3');"  class="tab">线路查询</a></li>
 									</ul>
 									
 									<div id="content_1" class="content"  style="width:234px;">
 										<table>
 										<tr style="width:140px;">
-											<td>名称:</td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:</span></td>
 											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
 										</tr>
 
 										<tr>
-											<td>所属类别:</td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">所属类别:</span></td>
 											<td>
 												<select class="selectClass" style="width:154px;margin-top:10px;">
 														<option>A</option>
@@ -60,7 +60,7 @@
 										</tr>
 
 										<tr>
-											<td>所属区县:</td>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">所属区县:</span></td>
 											<td>
 												<select  class="selectClass" style="width:154px;margin-top:10px;">
 													<option>B</option>
@@ -70,7 +70,7 @@
 										
 										<tr >
 											<td colspan="2">
-												<input type="button" class="btnClass" name="查询" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
+												<input type="button" onclick="searchPoint();" class="btnClass" name="查询" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
 											</td>
 										</tr>
 										</table>
@@ -81,18 +81,56 @@
 									
 									<div id="content_2" class="content" style="width:234px;">
 										<table>
-										<tr><td></td><td></td></tr>
-										<tr><td></td><td></td></tr>
-										<tr><td></td><td></td></tr>
+										<tr style="width:140px;">
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址:</span></td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
+										</tr>
+
+										<tr>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">所属类别:</span></td>
+											<td>
+												<select class="selectClass" style="width:154px;margin-top:10px;">
+														<option>A</option>
+												</select>
+											</td>
+										</tr>
+
+										<tr>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">距&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;离:</span></td>
+											<td>
+												<select  class="selectClass" style="width:154px;margin-top:10px;">
+													<option>B</option>
+												</select>
+											</td>
+										</tr>
+										
+										<tr >
+											<td colspan="2">
+												<input type="button" onclick="searchArea();" class="btnClass" name="查询" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
+											</td>
+										</tr>
 										</table>
 									</div>
+									
 									<div id="content_3" class="content" style="width:234px;">
 										<table>
-										<tr><td></td><td></td></tr>
-										<tr><td></td><td></td></tr>
-										<tr><td></td><td></td></tr>
-										</table>
+										<tr style="width:140px;">
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">此处出发:</span></td>
+											<td><input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/></td>
+										</tr>
 
+										<tr>
+											<td><span class="labelClass" style="margin-top:10px;font-weight:bolder;">到达此处:</span></td>
+											<td>
+												<input type="text" class="inputClass"  style="width:142px;margin-top:10px;" name="addr_name"/>
+											</td>
+										</tr>
+										<tr >
+											<td colspan="2">
+												<input type="button" onclick="searchPath();" class="btnClass" name="查询" value="查询" style="float:right;margin-right:10px;margin-top:5px;"/>
+											</td>
+										</tr>
+										</table>
 									</div>
 							</div>
 						</div>

@@ -277,3 +277,14 @@ function openMarkerTipById1(pointid, thiss) {  //根据id打开搜索结果点ti
 function onmouseout_MarkerStyle(pointid, thiss) { //鼠标移开后点样式恢复          
 	ifmarker = "";
 }
+
+
+function searchPoint()
+{
+}
+function searchArea()
+{
+}
+function searchPath()
+{
+}
