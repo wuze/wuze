@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 #Thu Apr 11 09:14:21 CST 2013
 eclipse.preferences.version=1
 include_path=0;/ZZMap
+=======
+#Wed Apr 10 23:36:27 CST 2013
+eclipse.preferences.version=1
+include_path=0;/new_map
+>>>>>>> b3a913a51b3c29fb22f84b39feb5989bbcb521f2
 use_asp_tags_as_php=false
