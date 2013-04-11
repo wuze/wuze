@@ -19,36 +19,28 @@
             	<li <?php if($pagetitle=='联系我们'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('contactus'); ?>">联系我们</a></li>
             </ul>
         </div>
+        
+        
         <div class=top_nav3>
-        	<h2><span>园林景观</span></h2>
+        	<h2><span>友情链接</span></h2>
             <ul class="last">
-            	<li <?php if($pagetitle=='园林景观'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('viewlist'); ?>">园林景观列表</a></li>
-            <li <?php if($pagetitle=='上传图片(景观)'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('viewlist/upload_index'); ?>">上传图片(景观)</a></li>
-            </ul>
+            	<li <?php if($pagetitle=='园林景观'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('viewlist'); ?>">友情链接列表</a></li>
         </div>       
         
         <div class=top_nav3>
-        	<h2><span>产品展示</span></h2>
+        	<h2><span>传统类</span></h2>
             <ul class="last">
-                <li <?php if($pagetitle=='产品展示'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('product'); ?>">产品展示</a></li>
-            	<li <?php if($pagetitle=='上传图片(产品)'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('product/upload_index'); ?>">上传图片(产品)</a></li>
+                <li <?php if($pagetitle=='产品展示'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('product'); ?>">传统类列表</a></li>
+            	<li <?php if($pagetitle=='上传图片(产品)'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('product/upload_index'); ?>">录入传统类信息</a></li>
             </ul>
         </div>
         
         
         <div class=top_nav3>
-        	<h2><span>新闻中心</span></h2>
+        	<h2><span>索引类</span></h2>
             <ul class="last">
-                <li <?php if($pagetitle=='新闻列表'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('newslist'); ?>">新闻列表</a></li>
-				<li <?php if($pagetitle=='编辑新闻'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('newslist/news_edit'); ?>">编辑新闻</a></li>
-            </ul>
-        </div>
-        
-        <div class=top_nav3>
-        	<h2><span>苗木百科</span></h2>
-            <ul class="last">
-                <li <?php if($pagetitle=='百科列表'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('baikelist'); ?>">百科列表</a></li>
-				<li <?php if($pagetitle=='编辑文章'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('baikelist/baike_edit'); ?>">编辑文章</a></li>
+                <li <?php if($pagetitle=='新闻列表'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('newslist'); ?>">索引类列表</a></li>
+				<li <?php if($pagetitle=='编辑新闻'){?>style="background: none repeat scroll 0px 0px rgb(255, 153, 0);"<?php } ?>><a href="<?php echo site_url('newslist/news_edit'); ?>">录入索引类信息</a></li>
             </ul>
         </div>
         
