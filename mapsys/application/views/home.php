@@ -9,6 +9,7 @@
 			<img src="images/title.png"  width="300" height="110" />						
 			<?php $wk = array(1=>"星期一",2=>"星期二",3=>"星期三",4=>"星期四",5=>"星期五",6=>"星期六",0=>"星期天");
 				$now = date("w");
+				2013-4-11 17:21:19
 			?>
 			
 			<div id="menu">
