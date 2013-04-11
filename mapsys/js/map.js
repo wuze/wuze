@@ -79,7 +79,7 @@ function setLngLat(marker){
 
 //添加地标
 function addMarker(point, index) {
-	var myIcon = new BMap.Icon("/images/map/" + (index + 1) + ".png", new BMap.Size(22, 29), {
+	var myIcon = new BMap.Icon("/images/map/1.png", new BMap.Size(27, 38), {
 		anchor: new BMap.Size(10, 27)
 	});
 	
