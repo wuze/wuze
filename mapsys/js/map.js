@@ -1,9 +1,17 @@
-var city_name;
+var city_name="福州";
 
 var imgurl = "http://d2.img.com/";
 if(bmaplng==undefined) var bmaplng;
 if(bmaplat==undefined) var bmaplat;
 var bmap;
+var ac;
+
+
+
+
+
+
+
 
 // 初始化地图
 // 默认显示当前所在城市
@@ -19,15 +27,22 @@ function BmapInit() {
 		bmap.centerAndZoom(new BMap.Point(bmaplng, bmaplat), 18);
 		addMarker(new BMap.Point(bmaplng, bmaplat), 0);
 	}
-	bmap.addControl(new BMap.NavigationControl());  
-	bmap.addControl(new BMap.MapTypeControl());
+	
+	bmap.addControl(new BMap.NavigationControl());  			 //导航
+	bmap.addControl(new BMap.MapTypeControl()); 				 //类型
+	bmap.addControl(new BMap.OverviewMapControl());              //添加默认缩略地图控件
+	bmap.addControl(new BMap.OverviewMapControl({isOpen:true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT}));   //右上角，打开
 	bmap.enableScrollWheelZoom();
+	
+	
 	
 	//自动搜索
 	var ac = new BMap.Autocomplete(    
-    {"input" : "search_txt"
+    {"input" : "addr_name"
     ,"location" : city_name
 	});
+	
+	
 	
 	//获得当前城市
 	function getCity(result){
@@ -73,8 +88,6 @@ function setLngLat(marker){
 		document.getElementById('jd').value = e.point.lat;
 	});
 }
-
-
 
 
 //添加地标
