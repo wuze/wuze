@@ -4,8 +4,9 @@ var imgurl = "http://d2.img.com/";
 if(bmaplng==undefined) var bmaplng;
 if(bmaplat==undefined) var bmaplat;
 var bmap;
-var ac;
-
+var ac_addr_name;
+var ac_area_name;
+var ac_path_from,ac_path_to;
 
 
 
@@ -37,11 +38,29 @@ function BmapInit() {
 	
 	
 	//自动搜索
-	var ac = new BMap.Autocomplete(    
+	var ac_addr_name = new BMap.Autocomplete(    
     {"input" : "addr_name"
     ,"location" : city_name
 	});
 	
+	
+	var ac_area_name = new BMap.Autocomplete(    
+		    {"input" : "area_name"
+		    ,"location" : city_name
+	});
+	
+	
+	var ac_path_from = new BMap.Autocomplete(    
+		    {"input" : "path_from"
+		    ,"location" : city_name
+	});
+	
+	var ac_path_to =   new BMap.Autocomplete(    
+		    {"input" : "path_to"
+		        ,"location" : city_name
+	});
+		    	
+			
 	
 	
 	//获得当前城市
