@@ -25,7 +25,7 @@ function BmapInit() {
 		var currentCity = new BMap.LocalCity();
 		currentCity.get(getCity); 
 	}else{
-		bmap.centerAndZoom(new BMap.Point(bmaplng, bmaplat), 18);
+		bmap.centerAndZoom(new BMap.Point(bmaplng, bmaplat), 11);
 		addMarker(new BMap.Point(bmaplng, bmaplat), 0);
 	}
 	
@@ -42,7 +42,6 @@ function BmapInit() {
     {"input" : "addr_name"
     ,"location" : city_name
 	});
-	
 	
 	var ac_area_name = new BMap.Autocomplete(    
 		    {"input" : "area_name"
@@ -66,30 +65,10 @@ function BmapInit() {
 	//获得当前城市
 	function getCity(result){
 		city_name = result.name;
-		bmap.centerAndZoom(result.name, 12);	
+		bmap.centerAndZoom(result.name, 11);	
 	}
 }
 
-
-
-//搜索地图
-function map_search(){
-	bmap.clearOverlays();    //清除地图上所有覆盖物
-	var search_txt = document.getElementById('search_txt').value;
-	// 创建地址解析器实例
-	var bmyGeo = new BMap.Geocoder();
-	// 将地址解析结果显示在地图上,并调整地图视野
-	bmyGeo.getPoint(search_txt, function(point){
-	if (point) {
-			bmap.centerAndZoom(point, 18);
-			addMarker(point,1);
-	}
-	else
-	{
-			alert('查无此点，请输入“xx市xx镇xx村xx街道这样的地址”');  
-	}
-	},"中国");
-}
 
 /**
  * 设置百度的经纬度
@@ -156,15 +135,15 @@ function searchPoint()
 	var search_txt = addr_name;
 	var bmyGeo = new BMap.Geocoder();
 	bmyGeo.getPoint(search_txt, function(point){
-	if (point) {
-			bmap.centerAndZoom(point, 18);
-			addMarker(point,1);
-	}
-	else
-	{
-			alert('查无此点，请输入“xx市xx镇xx村xx街道这样的地址”');  
-	}
-	},"中国");
+		if (point) {
+				bmap.centerAndZoom(point, 18);
+				addMarker(point,1);
+		}
+		else
+		{
+				alert('查无此点');  
+		}
+	},"福建省");
 }
 
 function searchArea()
@@ -178,14 +157,19 @@ function searchArea()
 		return;
 	}
 	
-	
-	
-	
+	bmap.clearOverlays();    //清除地图上所有覆盖物
+	var search_txt = addr_name;
+	bmap.centerAndZoom("福州", 11);
+	var local = new BMap.LocalSearch(bmap, {
+	  renderOptions:{map: bmap, autoViewport:true}
+	});
+	local.searchNearby("小吃", "福州南站","1000");
 }
+
 function searchPath()
 {
-	var path_from = $('#path_from').text();
-	var path_to   = $('#path_to').text();
+	var path_from = $('#path_from').val();
+	var path_to   = $('#path_to').val();
 	
 	if(!path_from)
 	{
@@ -198,6 +182,13 @@ function searchPath()
 		alert("请输入目的地点");
 		return;
 	}
+	
+	bmap.centerAndZoom("福州", 14);
+	var transit = new BMap.TransitRoute(bmap, {
+	  renderOptions: {map: bmap}
+	});
+	transit.search("福建师大", "福州南站");
+	
 }
 
 
