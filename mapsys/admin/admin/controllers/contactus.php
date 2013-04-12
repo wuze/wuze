@@ -12,10 +12,10 @@ class Contactus extends MY_Controller {
 	var $notice = "";
 	public function index()
 	{	
-		 $data['pagetitle'] = "联系我们";
+		$data['pagetitle'] = "联系我们";
 		$this->load->database();
 		$this->load->view('contact',$data);
-		
+
 	}
 	
 	public function write_contact(){

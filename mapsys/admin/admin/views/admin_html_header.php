@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $pagetitle; ?></title>
+<link rel="stylesheet" href="/admin/css/public.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="/admin/css/admin_css/layout_public.css?v=1206131" type="text/css" media="screen" charset="utf-8" />
 <script src="/admin/js/jquery.1.4.js" type="text/javascript"></script>
 <script scr="/admin/ckeditor/ckeditor.js" type="text/javascript"></script>

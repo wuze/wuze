@@ -9,6 +9,7 @@
     	<?php $this->load->view('admin_notice'); ?>
     	<?php $this->load->view('admin_main'); ?>
     </div>
+    
 	<!--rigth ends-->
 	<div class="iclear"></div>
 </div>
