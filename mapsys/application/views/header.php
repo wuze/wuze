@@ -11,7 +11,8 @@
 <script type="text/javascript"   src="/js/map.js"></script>
 <script type="text/javascript"   src="/js/list.js"></script>
 
-<title>HELLO</title>
+<title>福建文化地图在线服务平台</title>
+<link rel="shortcut icon" href="/images/favicon.ico">
 </head>
 <!-- 首页头部 -->
 <?php 
