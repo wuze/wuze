@@ -1,5 +1,5 @@
 <!--footer starts-->
-<div id="footer"><p>©2010 嘀嗒团（didatuan.com）<a href="http://www.miitbeian.gov.cn/" target="_blank">京ICP备10203456号</a></p></div>
+<div id="footer"><p>©2010 <a href="#" target="_blank">京ICP备10203456号</a></p></div>
 <!--footer ends-->
 
 <!--dialog-->
