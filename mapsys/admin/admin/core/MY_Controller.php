@@ -1,11 +1,7 @@
 <?php
 /**
  * 扩展权限控制入口文件
- *
- * Version: 1.0.0
- * Web: http://www.bkw.cn/
- * Copyright: 2011-2012 (flourish@msn.cn)
- * Last Modified: 20011-11-9 20:56
+
  *
  */
 
@@ -24,10 +20,10 @@ class MY_Controller extends CI_Controller
 	var $rbac;
 	var $_globmenu;
 	var $_roles_id = 'r1,r2';
+
 	function MY_Controller(){
 		parent::__construct();
 		
-
 		//开启允许QueryString配置
 		//$this->config->set_item('enable_query_strings', TRUE);
 
@@ -36,6 +32,7 @@ class MY_Controller extends CI_Controller
 			session_start();
 		}
 
+		/*
 		$this->rbac =& load_class('Rbac', 'core');
 		$roles = '';$this->rbac->getRoles();
 		if(!$roles){
@@ -58,6 +55,8 @@ class MY_Controller extends CI_Controller
 
 		$this->_menuinit();
 		$this->_writeLogs();
+		*/
+		
 	}
 
 	protected function setrole_id()
@@ -311,7 +310,7 @@ class MY_Controller extends CI_Controller
 		$this->_logToFile($msg,"adminlog");
 	}
 
-
+	
 
 }
 ?>

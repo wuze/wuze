@@ -1,3 +1,13 @@
+
+#main
+{
+	width: 100%;
+	background-color: #000;
+	display: block;
+	background: url(img/left_h2_bg.gif) repeat-x;
+text-indent: 10px;
+}
+
 .inputClass{
 	border: none;
 	height: 14px;
@@ -23,7 +33,7 @@
 	margin-right: 10px;
 }
 
-.btnClass {
+.serachbtnClass {
 	width: 71px;
 	height: 30px;
 	padding-left: 30px;
@@ -32,7 +42,57 @@
 	color: rgb(0, 64, 125);
 	font-weight: bold;
 	font-size: 12px;
-	background: url("/images/searchBut.png") no-repeat left top;
+	background: url("/img/searchBut.png") no-repeat left top;
 	border: none;
 	cursor: pointer;
+}
+
+.submitbtnClass
+{
+	width: 120px;
+	height: 30px;
+	font-size: 12px;
+	line-height: 30px;
+	cursor: pointer;
+	color: rgb(0,64,125);
+	font-weight: bold;
+}
+
+
+textarea {
+	-webkit-appearance: textarea;
+	background-color: white;
+	border: 1px solid;
+	border-image: initial;
+	-webkit-rtl-ordering: logical;
+	-webkit-user-select: text;
+	-webkit-box-orient: vertical;
+	resize: auto;
+	cursor: auto;
+	padding: 2px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+.tableClass
+{
+	margin: 0px;
+	padding: 0;
+	width: 100%;
+	border-collapse: collapse;
+	border-left: 1px solid #CDCDCD;
+	border-top: 1px solid #CDCDCD;
+}
+
+
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	background: transparent;
+}
+
+th {
+	font-weight: bold;
 }

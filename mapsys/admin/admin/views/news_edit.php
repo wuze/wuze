@@ -3,12 +3,10 @@
 <script src="/kindeditor/kindeditor.js" type="text/javascript"></script>
 <script>
 KE.show({ id:'notice_1', imageUploadJson : '/upload_json.php'});
-KE.show({ id:'lottery_notice', imageUploadJson : '/upload_json.php'});
 </script>
 
 <style>
 <!--
-
 .formbutton {
     font-size: 14pt;
     font-weight: bolder;
