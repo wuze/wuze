@@ -11,48 +11,36 @@ class About extends MY_Controller {
 	public function index()
 	{	
 		$content=$this->input->post("about_us");
+		//$str = $this->db->last_query();
+		
+		
+		$this->db->select("*");
+		$this->db->where('oname','关于我们');
+		$this->db->order_by("create_time", "DESC");
+		$result = $this->db->get("other");
+		$result_arr = $result->result_array();
+
+		$ret_content = $result_arr[0]['ocontent'];
 		
 		if( $content )
 		{
-			$where = "oname='关于我们'";
-			
-			$this->db->select("*");
-			$this->db->where('oname','关于我们');
-			$this->db->order_by("create_time", "DESC");
-			$ret = $this->db->get("other");
-			
-		
-			if( count( $ret) )
-			{
-				
+			if( $ret_content  )
+			{			
+				$where = "oname='关于我们'";
+				$condition = array('ocontent'=>$content);
+				$str = $this->db->update_string('other',$condition,$where);
+				$ret = $this->db->query( $str );
 			}
 			else
 			{
 				$data = array('oname'=>'关于我们',
-						  'uid'=>Session::Get("user_id"),
+						  'uid'=>1,//Session::Get("user_id"),
 						  'ocontent'=>$content
 						 );
 				$ret = $this->db->insert('other',$data);
 			}
-			
-			
-			/*
-			$condition = array('ocontent'=>$content);
-			$str = $this->db->query_string('other',$condition,$where);
-			$ret = $this->db->query( $str );
-			
-	
-			$data = array('oname'=>'关于我们',
-						  'uid'=>Session::Get("user_id"),
-						  'ocontent'=>$content
-						  );
-			
-			
-			
-			$ret = $this->db->insert('other',$data);
-			
-			
-			*/
+
+			$result = $content;
 			if( $ret )
 			{
 				Session::Set("Success","写入成功");
@@ -61,9 +49,10 @@ class About extends MY_Controller {
 			{
 				Session::Set("Error","写入失败");
 			}
-			
 		}
+		
 		$data['html_title'] = "关于我们";
+		$data['content']    = $content?$content:$ret_content;
 		$this->load->view('about_index',$data);
 	}
 	
