@@ -15,15 +15,16 @@ class slist extends MY_Controller {
 	
 	public function index()
 	{	
-		$this->load->library("pagination");
+		$this->load->library("Pagination");
 		$ret = $this->db->get("category");
 		$config['base_url'] = base_url()."index.php/slist/index";
 		$config['total_rows'] =  $ret->num_rows();
-		$config['per_page']   =  2;
+		$config['per_page']   =  1;
 		$config['first_link'] =  "首页";
 		$config['last_link']  =  "尾页";
-		$config['full_tag_open'] = '<p>';
-		$config['full_tag_close'] = '</p>';
+		$config['full_tag_open'] = '<ul>';
+		$config['full_tag_close'] = '</ul>';
+		$config['anchor_class']   = "class='pagea'";
 		
 		$this->pagination->initialize( $config );
 		$query = $this->db->get('category',$config['per_page'],$this->uri->segment(3));

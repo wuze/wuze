@@ -48,9 +48,10 @@ table{
 			<tr>
 				<th class="h_60" width="150">序号</th>
 				<th class="h_60" width="150">分类ID</th>
-				<th class="h_60" width="200">分类标题</th>
+				<th class="h_60" width="150">分类标题</th>
 				<th class="h_60" width="150">是否父级分类</th>
-				<th class="h_60" width="200">操&nbsp;&nbsp;&nbsp;&nbsp;作</th>
+				<th class="h_60" width="150">子分类</th>
+				<th class="h_60" width="250">操&nbsp;&nbsp;&nbsp;&nbsp;作</th>
 			</tr>
 			
 			
@@ -61,12 +62,17 @@ table{
     			<td style="text-align:center;"><?php echo $v['id']; ?></td>
     			<td style="text-align:center;"><?php echo $v['catname']; ?></td>
     			<td style="text-align:center;"><?php if($v['parentid']==1){ echo "是";} else { echo "否";} ?></td>
+    			<td style="text-align:center;">
+    					<a id="a_<?php echo $v['id'];?>" style="cursor:pointer;color:red;" onclick="unpublish(<?php echo $v['id'];?>)">查看所有子分类</a>
+    			</td>
     			
     			<td style="text-align:center;">
-    			<?php if($v['show_status']=='Y'){?><a id="a_<?php echo $v['id'];?>" style="cursor:pointer;color:red;" onclick="unpublish(<?php echo $v['id'];?>)">文章下线</a>
-    			<?php }else{ ?><a style="cursor:pointer;color:blue;" onclick="publish(<?php echo $v['id'];?>)">发布文章</a><?php } ?>
-    			<a style="cursor:pointer" href="<?php echo site_url('/baikelist/update_index/'.$v['id']);?>">修改</a>
-    			<a style="cursor:pointer;" onclick="delnews(<?php echo $v['id'];?>)">删除</a></td>
+    			    
+    			    <a id="a_<?php echo $v['id'];?>" style="cursor:pointer;color:red;" onclick="unpublish(<?php echo $v['id'];?>)">查看所有点</a>
+    	    		<a style="cursor:pointer;" onclick="delnews(<?php echo $v['id'];?>)">删除该分类</a>
+    			    <a style="cursor:pointer" href="<?php echo site_url('/baikelist/update_index/'.$v['id']);?>">修改</a>
+
+    			</td>
     		</tr>
     		<?php endforeach;?>
     		<?php }else{?>

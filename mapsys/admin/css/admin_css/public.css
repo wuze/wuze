@@ -18,6 +18,26 @@
 	color: #121212;
 	font-size: 0;
 }
+
+
+.pagea
+{
+	border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+	-moz-border-radius: 5px; 
+	font-size: 12px;
+	display: inline-block;
+	width: 26px;
+	text-align: center;
+	height: 23px;
+	line-height: 25px;
+	background: url("img/page.gif") repeat-x;
+	color: #767676;
+	border: 1px solid #C2C2C2;
+	font-weight: bold;
+}
+
+
 .inputClass{
 	border: none;
 	height: 14px;

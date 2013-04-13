@@ -105,7 +105,6 @@ class CI_Pagination {
 	}
 
 	// --------------------------------------------------------------------
-
 	/**
 	 * Generate the pagination links
 	 *
