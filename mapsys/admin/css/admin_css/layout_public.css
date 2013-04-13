@@ -31,7 +31,7 @@ th.specalt { border-left: 1px solid #C1DAD7; border-top: 0; background: #f5fafa 
 #dialog .field #isubmit{ margin-left:100px;}
 #dialog.xxx { width:580px; margin-left:-290px;}/* public ends */
 
-#header{ border-bottom:3px solid #70c6ff; margin:0 auto; position:relative; height:40px; background:url(img/admin_logo.gif) 0 -80px repeat-x; margin-bottom:10px;}
+#header{ border-bottom:3px solid #70c6ff; margin:0 auto; position:relative; height:50px; background:url(img/admin_logo.gif) 0 -80px repeat-x; margin-bottom:10px;}
 #logo{ float:left; padding:2px 0 0 5px;}
 .htip{ line-height:30px; font-size:14px; text-align:center; line-height:30px; margin:0 10px 10px 10px; border-radius:2px; color:#333;}
 .htip.err{background:#FEEAE9; border: 1px solid #DFB8B9;}

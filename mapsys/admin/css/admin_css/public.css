@@ -1,13 +1,23 @@
 
 #main
 {
-	width: 100%;
+	width: 98%;
 	background-color: #000;
 	display: block;
-	background: url(img/left_h2_bg.gif) repeat-x;
-text-indent: 10px;
+	background: url(img/header_banner.png) repeat-x;
+	text-indent: 10px;
 }
 
+
+.page
+{
+	padding: 15px 0px 50px;
+	text-align: right;
+	width:98%;
+	height: 27px;
+	color: #121212;
+	font-size: 0;
+}
 .inputClass{
 	border: none;
 	height: 14px;
