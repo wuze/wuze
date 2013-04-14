@@ -99,7 +99,7 @@ function delItem(id)
 	    ok: function () {
 				$.post('/admin/index.php/slist/delItem',{cid:id},function(r){
 					if( r.substr(0,1)== 1){
-						window.location="/admin/index.php/newslist";
+						$('#tr_'+id).hide();
 					}else{
 						alert("操作失败");
 					}

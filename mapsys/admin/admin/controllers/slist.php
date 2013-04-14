@@ -59,46 +59,6 @@ class slist extends MY_Controller {
 		$data['pagetitle'] = "百科列表";
 		$this->load->view('baike_update',$data);
 	}
-	
-	
-	/**
-	 * 修改新闻
-	 * Enter description here ...
-	 */
-	public function updatebaike(){
-		
-		$news_id = $this->input->post("news_id");
-		$condition['show_status'] 	= $this->input->post('show_status');
-		$condition['create_time'] 	= time();
-		$condition['author']		= $this->input->post('author');
-		$condition['source']		= $this->input->post('source');
-		$condition['writer']		= $this->input->post('writer')?$this->input->post('writer'):'admin';
-		$condition['editor']		= $this->input->post('editor')?$this->input->post('editor'):'admin';
-		$condition['title']         = $this->input->post('title')?$this->input->post('title'):'admin';
-		$condition['content'] 		= $this->input->post('news_content')?$this->input->post('news_content'):'admin';
-		$condition['create_time']   = $this->input->post('create_time')?strtotime($this->input->post('create_time')):time();
-		$condition['type']			 = 'tree';
-		
-		if( $news_id ){
-	  		$where = "id=".$news_id;
-	  		
-			$str = $this->db->update_string('ddnews',$condition,$where);
-			$ret = $this->db->query( $str );
-			
-			if( $ret>0 ){
-				$notice = "<script>alert('修改成功');</script>";
-			}else{
-				$notice = "<script>alert('修改失败');</script>";
-			}
-			$this->session->set_userdata('notice',$notice);
-		}else{
-			$notice = "<script>alert('ID为空修改失败');</script>";
-			$this->session->set_userdata('notice',$notice);
-		}
-		redirect('slist');
-	}
-	
-
 
 	
 	/**
@@ -107,17 +67,23 @@ class slist extends MY_Controller {
 	 */
 	public function delItem(){
 		
-		$newsid = strval($_POST['id']);
-		$str = " DELETE FROM category WHERE id=".$newsid;
-		$ret = $this->db->query( $str );
+		$newsid = strval($_POST['cid']);
 		
-		echo $this->db->last_query();
-		die;
-		
+		if( $newsid )
+		{
+			$str = " DELETE FROM map_category WHERE id=".$newsid;
+			$ret = $this->db->query( $str );
+		}
 		if( $ret>0 )
+		{
+			Session::Set("Success","删除成功");
 			echo "1";
-		else 
+		}
+		else
+		{
+			Session::Set("Error","删除失败"); 
 			echo "0";
+		}
 	}
 }
 
