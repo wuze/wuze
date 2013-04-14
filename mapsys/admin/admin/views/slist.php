@@ -90,7 +90,23 @@ table{
 <!--
 function delItem(id)
 {
-	art.dialog('简单愉悦的接口，强大的表现力，优雅的内部实现', function(){alert('yes');});
+	art.dialog({
+	    lock: true,
+	    background: '#C2C2C2', // 背景色
+	    opacity: 0.87,	// 透明度
+	    content: '中断用户在对话框以外的交互，展示重要操作与消息',
+	    icon: '',
+	    ok: function () {
+				$.post('/admin/index.php/slist/delItem',{cid:id},function(r){
+					if( r.substr(0,1)== 1){
+						window.location="/admin/index.php/newslist";
+					}else{
+						alert("操作失败");
+					}
+				});
+	    },
+	    cancel: true
+	});
 }
 //-->
 </script>

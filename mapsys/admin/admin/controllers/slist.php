@@ -32,13 +32,10 @@ class slist extends MY_Controller {
 			$list[] = $row;
 		}
 		
-		
 		$data['list'] = $list;
 		$data['html_title'] = "索引类列表";
 		$this->load->view('slist',$data);
 	}
-	
-
 	
 	
 	public function update_index(){
@@ -105,17 +102,20 @@ class slist extends MY_Controller {
 
 	
 	/**
-	 * 删除一条新闻
+	 * 删除一记录
 	 * Enter description here ...
 	 */
-	public function del(){
+	public function delItem(){
 		
 		$newsid = strval($_POST['id']);
-		$str = " DELETE FROM ddnews WHERE id=".$newsid;
+		$str = " DELETE FROM category WHERE id=".$newsid;
 		$ret = $this->db->query( $str );
 		
+		echo $this->db->last_query();
+		die;
+		
 		if( $ret>0 )
-			echo "1-SUCCESS";
+			echo "1";
 		else 
 			echo "0";
 	}

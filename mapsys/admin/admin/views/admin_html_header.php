@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/admin/css/admin_css/layout_public.css?v=1206131" type="text/css" media="screen" charset="utf-8" />
 <script src="/admin/js/jquery.1.4.js" type="text/javascript"></script>
 <script src="/admin/ckeditor/ckeditor.js" type="text/javascript"></script>
-<script src="/artDialog4.1.6/artDialog.js?skin=default"  type="text/javascript"></script>
+<script src="/artDialog/artDialog.js?skin=default"  type="text/javascript"></script>
 
 <title>文化地图--管理后台</title>
 <link rel="shortcut icon" href="/admin/images/favicon.ico">
