@@ -8,17 +8,15 @@
     <div style="float:right;margin-right:20px;margin-top:5px; font-size:20px;text-decoration:none;">
     <a href="<?php echo site_url('/logout');?>" >退出</a></div>
 </div>
-<!--  if $session_error=Session::Get('error',true) 
+<?php if( $session_error=Session::Get('Error',true)){   ?>
+
 <div class="htip err">
-$session_error
+	<?php echo $session_error; ?>
 </div>
-if
-->
-
-
-<!--if $session_notice=Session::Get('notice',true)
+<?php }?>
+<?php if ($session_notice=Session::Get('Success',true) ) { ?>
 <div class="htip suc">
-$session_notice
+	<?php echo $session_notice; ?>
 </div>
-if-->
+<?php  }?>
 <!--header ends-->

@@ -69,7 +69,7 @@ table{
     			<td style="text-align:center;">
     			    
     			    <a id="a_<?php echo $v['id'];?>" style="cursor:pointer;color:red;" onclick="unpublish(<?php echo $v['id'];?>)">查看所有点</a>
-    	    		<a style="cursor:pointer;" onclick="delnews(<?php echo $v['id'];?>)">删除该分类</a>
+    	    		<a style="cursor:pointer;" onclick="delItem(<?php echo $v['id'];?>)">删除该分类</a>
     			    <a style="cursor:pointer" href="<?php echo site_url('/baikelist/update_index/'.$v['id']);?>">修改</a>
 
     			</td>
@@ -88,42 +88,9 @@ table{
 
 <script type="text/javascript">
 <!--
-function publish(id){
-	if( !id )return ;
-	if( confirm("确定发布该文章到网站")){
-		$.post('/admin/index.php/newslist/updateshow',{id:id,show:'Y'},function(r){
-			if( r.substr(0,1)== 1){
-				window.location="/admin/index.php/newslist";
-			}else{
-				alert("操作失败");
-			}
-		});
-	}
-}
-function unpublish(id){
-	if( !id )return ;
-	if( confirm("确定下线该文章")){
-		$.post('/admin/index.php/newslist/updateshow',{id:id,show:'N'},function(r){
-			if( r.substr(0,1)== 1){
-				window.location="/admin/index.php/newslist";
-			}else{
-				alert("操作失败");
-			}
-		});
-	}
-}
-function delnews(id){
-	if(!id) return;
-
-	if( confirm("确定删除这篇文章:"+name)){
-		$.post('/admin/index.php/newslist/del',{id:id},function(r){
-			if( r.substr(0,1)== 1){
-				$('#tr_'+id).hide();
-			}else{
-				alert("删除失败");
-			}
-		});
-	}
+function delItem(id)
+{
+	art.dialog('简单愉悦的接口，强大的表现力，优雅的内部实现', function(){alert('yes');});
 }
 //-->
 </script>

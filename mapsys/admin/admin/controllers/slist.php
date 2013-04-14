@@ -32,6 +32,7 @@ class slist extends MY_Controller {
 			$list[] = $row;
 		}
 		
+		
 		$data['list'] = $list;
 		$data['html_title'] = "索引类列表";
 		$this->load->view('slist',$data);
